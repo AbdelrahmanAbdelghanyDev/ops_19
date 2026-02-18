@@ -1,0 +1,59 @@
+<odoo>
+    <data>
+
+        <!--        <record id="sale_form_inherit" model="ir.ui.view">-->
+        <!--            <field name="name">Sale form view</field>-->
+        <!--            <field name="model">sale.order</field>-->
+        <!--            <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <xpath expr="//field[@name='commitment_date']" position="replace">-->
+        <!--                    <field name="requested_date" widget="date"/>-->
+        <!--                    <field name="commitment_date" widget="date"/>-->
+        <!--                </xpath>-->
+
+        <!--            </field>-->
+        <!--        </record>-->
+
+
+        <record id="sales_form_inherit" model="ir.ui.view">
+            <field name="name">Sales form view</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date_order']" position="replace">
+                    <field name="date_order"
+                           invisible="state in ('sale', 'done', 'cancel')"
+                           widget="date"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="sale_tree_inherit" model="ir.ui.view">
+            <field name="name">Sale tree view</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='commitment_date']" position="replace">
+                    <field name="commitment_date" optional="hide" widget="date"/>
+                    <field name="requested_date" optional="hide" widget="date"/>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="sale_qutation_inherit" model="ir.ui.view">
+            <field name="name">Sale qutation view</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='commitment_date']" position="replace">
+                    <field name="commitment_date" widget="date"/>
+                    <field name="requested_date" widget="date"/>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

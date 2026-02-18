@@ -1,0 +1,36 @@
+<!-- <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xml>
+<template xml:space="preserve">
+	<t t-extend="FormView.buttons">
+		<t t-jquery="button.o_form_button_save" t-operation="replace">
+			<t t-if="widget.dataset.model == 'account.bank.statement' ">
+				<t t-if="widget.dataset.ids[0] == undefined ">
+					<button accesskey="s" class="btn btn-primary btn-sm o_form_button_save" style="visibility:hidden;" type="button"/>
+				</t>
+				<t t-if="widget.dataset.ids[0] != undefined ">
+					<button accesskey="s" class="btn btn-primary btn-sm o_form_button_save" type="button">Save
+				</button>
+				</t>
+			</t>
+			<t t-if="widget.dataset.model != 'account.bank.statement'">
+				<button accesskey="s" class="btn btn-primary btn-sm o_form_button_save" type="button">Save
+				</button>
+			</t>
+		</t>
+		<t t-jquery="button.o_form_button_cancel" t-operation="replace">
+			<t t-if="widget.dataset.model == 'account.bank.statement'">
+				<t t-if="widget.dataset.ids[0] == undefined ">
+					<button accesskey="j" class="btn btn-primary btn-sm o_form_button_cancel" style="visibility:hidden;" type="button"/>
+				</t>
+				<t t-if="widget.dataset.ids[0] != undefined ">
+					<button accesskey="j" class="btn btn-default btn-sm o_form_button_cancel" type="button">Discard
+        		</button>
+				</t>
+			</t>
+			<t t-if="widget.dataset.model != 'account.bank.statement'">
+				<button accesskey="j" class="btn btn-default btn-sm o_form_button_cancel" type="button">Discard
+        		</button>
+			</t>
+		</t>
+	</t>
+</template> -->

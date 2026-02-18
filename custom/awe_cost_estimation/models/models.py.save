@@ -1,0 +1,628 @@
+# -*- coding: utf-8 -*-
+
+from odoo import models, fields, api
+
+
+SEC = [
+    ('A', 'A'),
+    ('AB', 'AB'),
+    ('BC1', 'BC1'),
+    ('C1', 'C1'),
+    ('C2', 'C2'),
+    ('C1C2', 'C1C2'),
+    ('C2D', 'C2D'),
+    ('D', 'D'),
+    ('E', 'E'),
+    ('DE', 'DE'),
+]
+
+
+class ExecutiveTeams(models.Model):
+    _name = 'executive.team'
+    _inherit = 'crm.team'
+
+
+class RevenueTeams(models.Model):
+    _name = 'revenue.team'
+    _inherit = 'crm.team'
+
+
+class CustomCRMLead(models.Model):
+    _inherit = 'crm.lead'
+    executive_team_id = fields.Many2one('executive.team')
+    revenue_team_id = fields.Many2one('revenue.team')
+    project_objective = fields.Many2one('project.objective')
+    working_country = fields.Many2one(
+        'res.country', string="Filed Work Country")
+    transcript = fields.Selection(
+        [('yes', 'Yes'), ('no', 'No')],
+        string='Transcript'
+    )
+    ex_transcript = fields.Selection(
+        [('yes', 'Yes'), ('no', 'No')],
+        string='Extended Transcript'
+    )
+    printing_material = fields.Selection(
+        [('yes', 'Yes'), ('no', 'No')],
+        string='Printing Material'
+    )
+    transcript_lang = fields.Char(
+        string='Transcript Language'
+    )
+    length_of_interview = fields.Char('Length of Interview')
+    translation = fields.Selection(
+        [('yes', 'Yes'), ('no', 'No')],
+        string="Simultaneous Translation"
+    )
+    other_translation = fields.Char(
+        string="Other Translation"
+    )
+    dp = fields.Selection([('yes', 'Yes'), ('no', 'No')])
+    reporting = fields.Selection([('yes', 'Yes'), ('no', 'No')])
+    presentation = fields.Selection([('yes', 'Yes'), ('no', 'No')])
+    viewing_facility = fields.Selection([('yes', 'Yes'), ('no', 'No')])
+    client_attendance = fields.Selection([('yes', 'Yes'),
+                                          ('no', 'No')])
+    project_type = fields.Selection([
+        (0, 'Adhoc'),
+        (1, 'Tracker'),
+        (2, 'Desk Research'),
+        (3, 'syndicated')
+    ])
+    objective = fields.Char('Objective')
+    methodology = fields.Char('Methodology')
+    criteria_usage = fields.Text('Criteria / Usage')
+    sample_size_text = fields.Char('Sample Size')
+    sample_struct_per_reg = fields.Char('Sample Structure per Region')
+    sample_struct_per_sec = fields.Char('Sample Structure per SEC')
+    sample_struct_per_age = fields.Char('Sample Structure per Age')
+    sample_struct_per_gen = fields.Char('Sample Structure per Gender')
+    sample_struct_per_bra = fields.Char('Sample Structure per Brand')
+    no_of_client_attendees = fields.Char('Number of Clients to Attend')
+    no_of_units_attendees = fields.Char('Number of Units Client will Attend')
+    client_attendence_region_ids = fields.Many2many(
+        'res.country.state',
+        string='Client Attendance Region'
+    )
+    research_type_id = fields.Many2one('product.category', required=True)
+    research_type_name = fields.Char(
+        'Reaseach Type Name',
+        related="research_type_id.name",
+        readonly=True,
+    )
+
+    details = fields.Text("Other Details:")
+    data_capture = fields.Selection([('capi', 'CAPI'),
+                                     ('papi', 'PAPI')])
+
+    project_objective = fields.Many2one('project.objective')
+
+    @api.onchange('research_type_id')
+    def onchange_research_id(self):
+        obj = self.research_type_id
+        while True:
+            if not obj.parent_id:
+                self.research_type_name = obj.name
+                return {'research_type_name' : obj.name}
+            else:
+                # print()
+                obj = obj.parent_id
+
+    def new_cost_estimation(self):
+        vals = {'partner_id': self.partner_id.id,
+                'client_attendence_region_ids': [(6, 0 ,self.client_attendence_region_ids.ids)],
+                'viewing_facility': self.viewing_facility,
+                'transcript': self.transcript,
+                'no_of_client_attendees': self.no_of_client_attendees,
+                'viewing_facility': self.viewing_facility,
+                'translation': self.translation,
+                'ex_transcript': self.ex_transcript,
+                'printing_material': self.printing_material,
+                'transcript_lang': self.transcript_lang,
+                'other_translation': self.other_translation,
+                'no_of_units_attendees': self.no_of_units_attendees,
+                'user_id': self.user_id.id,
+                'parent_opportunity': self.id,
+                'pricelist_id': self.partner_id.property_product_pricelist and self.partner_id.property_product_pricelist.id or False,
+                'research_type': self.research_type,
+                'approach': self.approach,
+                'methodology': self.methodology,
+                'number_of_legs': self.number_of_legs,
+                'sample_size': self.sample_size,
+                'age': self.age,
+                'gender': self.gender,
+                'sec': self.sec,
+                'region': self.region,
+                'usership': self.usership,
+                'moub': self.moub,
+                'length_of_interview': self.length_of_interview,
+                'translation': self.translation,
+                'dp': self.dp,
+                'reporting': self.reporting,
+                'presentation': self.presentation,
+                'viewing_facility': self.viewing_facility,
+                'client_attendance': self.client_attendance,
+                'details': self.details,
+                'estimation_type': self.research_type_id.id,
+                }
+        estimation = self.env['opportunity.cost.estimation'].create(vals)
+        product = self.env['crm.product_line']
+        for i in self.pdt_line:
+            product_value = {
+                'pdt_cost_estimation': estimation.id,
+                'product_id': i.product_id.id,
+                'name': i.name,
+                'product_uom_qty': i.product_uom_qty,
+                'uom_id': i.uom_id.id,
+                'category': i.category.id,
+                'fw_country': i.fw_country.id,
+                'project_objective': i.project_objective.id,
+                'research_type': i.research_type,
+                'data_capture': i.data_capture,
+                'gender': i.gender,
+                'sec': i.sec,
+                'age': i.age,
+                'number_of_legs': i.number_of_legs,
+                'client_attendance': i.client_attendance,
+            }
+
+            product.create(product_value)
+
+        return {
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'opportunity.cost.estimation',
+            'target': 'current',
+            'res_id': estimation.id,
+            'views': [(self.env.ref(
+                'custom_opportunity_cost_estimation_v11.opportunity_cost_estimation_form').id,
+                'form')],
+        }
+
+    @api.multi
+    def allocate_salesman(self, user_ids=None, team_id=False, executive_team_id=False, revenue_team_id=False):
+        """ Assign salesmen and salesteam to a batch of leads.  If there are more
+            leads than salesmen, these salesmen will be assigned in round-robin.
+            E.g.: 4 salesmen (S1, S2, S3, S4) for 6 leads (L1, L2, ... L6).  They
+            will be assigned as followed: L1 - S1, L2 - S2, L3 - S3, L4 - S4,
+            L5 - S1, L6 - S2.
+
+            :param list ids: leads/opportunities ids to process
+            :param list user_ids: salesmen to assign
+            :param int team_id: salesteam to assign
+            :return bool
+        """
+        index = 0
+        for lead in self:
+            value = {}
+            if team_id:
+                value['team_id'] = team_id
+            if executive_team_id:
+                value['executive_team_id'] = executive_team_id
+            if revenue_team_id:
+                value['revenue_team_id'] = revenue_team_id
+            if user_ids:
+                value['user_id'] = user_ids[index]
+                # Cycle through user_ids
+                index = (index + 1) % len(user_ids)
+            if value:
+                lead.write(value)
+        return True
+
+
+class CustomSaleOrder(models.Model):
+    _inherit = 'sale.order'
+    executive_team_id = fields.Many2one('executive.team')
+    revenue_team_id = fields.Many2one('revenue.team')
+
+    margin = fields.Float(compute='_compute_margin')
+    margin_percentage = fields.Char(compute='_compute_margin')
+
+    travel_expenses = fields.Float()
+    margin_after_travel = fields.Float(compute='_compute_margin')
+    margin_percentage_after = fields.Char(compute='_compute_margin')
+
+    @api.depends('opportunity_total_cost_2', 'amount_untaxed', 'travel_expenses')
+    def _compute_margin(self):
+        self.margin = self.amount_untaxed - self.opportunity_total_cost_2
+        if self.amount_untaxed == 0:
+            self.margin_percentage = '-Inf %'
+        else:
+            self.margin_percentage = str(
+                round(self.margin / self.amount_untaxed * 100.0, 2)) + ' %'
+
+        self.margin_after_travel = self.amount_untaxed - \
+            self.opportunity_total_cost_2 - self.travel_expenses
+        if self.amount_untaxed == 0:
+            self.margin_percentage_after = '-Inf %'
+        else:
+            self.margin_percentage_after = str(
+                round(self.margin_after_travel / self.amount_untaxed * 100.0, 2)) + ' %'
+
+    @api.onchange('opportunity_cost_estimation')
+    def _onchange_opportunity(self):
+        print (self.opportunity_cost_estimation)
+
+
+class CustomLeadtoOpportunity(models.TransientModel):
+    _inherit = 'crm.lead2opportunity.partner'
+    executive_team_id = fields.Many2one('executive.team')
+    revenue_team_id = fields.Many2one('revenue.team')
+
+    @api.multi
+    def _convert_opportunity(self, vals):
+        self.ensure_one()
+
+        res = False
+
+        leads = self.env['crm.lead'].browse(vals.get('lead_ids'))
+        for lead in leads:
+            self_def_user = self.with_context(default_user_id=self.user_id.id)
+            partner_id = self_def_user._create_partner(
+                lead.id,
+                self.action,
+                vals.get('partner_id') or lead.partner_id.id
+            )
+            res = lead.convert_opportunity(partner_id, [], False)
+        user_ids = vals.get('user_ids')
+
+        leads_to_allocate = leads
+        if self._context.get('no_force_assignation'):
+            leads_to_allocate = leads_to_allocate.filtered(
+                lambda lead: not lead.user_id)
+
+        if user_ids:
+            leads_to_allocate.allocate_salesman(
+                user_ids,
+                team_id=(vals.get('team_id')),
+                executive_team_id=(
+                    vals.get('executive_team_id')),
+                revenue_team_id=(vals.get('revenue_team_id')),
+            )
+
+        return res
+
+    @api.multi
+    def action_apply(self):
+        """ Convert lead to opportunity or merge lead and opportunity and open
+            the freshly created opportunity view.
+        """
+        self.ensure_one()
+        values = {
+            'team_id': self.team_id.id,
+            'executive_team_id': self.executive_team_id.id,
+            'revenue_team_id': self.revenue_team_id.id,
+        }
+
+        if self.partner_id:
+            values['partner_id'] = self.partner_id.id
+
+        if self.name == 'merge':
+            leads = self.opportunity_ids.merge_opportunity()
+            if leads.type == "lead":
+                values.update(
+                    {'lead_ids': leads.ids, 'user_ids': [self.user_id.id]})
+                self.with_context(
+                    active_ids=leads.ids)._convert_opportunity(values)
+            elif not self._context.get('no_force_assignation') or not leads.user_id:
+                values['user_id'] = self.user_id.id
+                leads.write(values)
+        else:
+            leads = self.env['crm.lead'].browse(
+                self._context.get('active_ids', []))
+            values.update(
+                {'lead_ids': leads.ids, 'user_ids': [self.user_id.id]})
+            self._convert_opportunity(values)
+
+        return leads[0].redirect_opportunity_view()
+
+
+class ProjectObjective(models.Model):
+    _name = 'project.objective'
+
+    name = fields.Char()
+
+
+class CustomSaleOrderLine(models.Model):
+    _inherit = 'sale.order.line'
+
+    no_of_waves = fields.Integer(default=1)  # Based on customer request.
+    no_of_units = fields.Float(default=1)  # Based on customer request.
+    # Based on customer request.
+    price_subtotal_new = fields.Float(compute='_amount_subtotal_new')
+    margin = fields.Float(compute='_compute_margin')
+    margin_percentage = fields.Char(compute='_compute_margin')
+
+    @api.one
+    @api.depends('product_id')
+    def _compute_margin(self):
+        self.margin =\
+            self.product_id.lst_price - self.product_id.standard_price
+        if self.product_id.standard_price == 0:
+            self.margin_percentage = 'Inf'
+        else:
+            self.margin_percentage = str(
+                1.0 * (self.margin / self.product_id.standard_price) * 100.0)
+
+    @api.depends('no_of_units', 'product_uom_qty', 'price_unit')
+    def _amount_subtotal_new(self):
+        for i in self:
+            i.price_subtotal_new = \
+                i.no_of_units * i.product_uom_qty * i.price_unit
+
+    @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id', 'no_of_waves', 'price_subtotal_new',
+                 'no_of_units')
+    def _compute_amount(self):
+        """
+        Compute the amounts of the SO line.
+        """
+        for line in self:
+            price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
+            taxes = line.tax_id.compute_all(
+                price * line.no_of_units * line.no_of_waves,
+                line.order_id.currency_id,
+                line.product_uom_qty,
+                product=line.product_id,
+                partner=line.order_id.partner_shipping_id
+            )
+            line.update({
+                'price_tax': taxes['total_included'] - taxes['total_excluded'],
+                'price_total': taxes['total_included'],
+                'price_subtotal': line.price_subtotal_new * line.no_of_waves,
+            })
+
+
+# class SampleSize(models.Model):
+#     _name = 'sample.size'
+
+#     name = fields.Char('SS')
+
+
+class LeadProductLine(models.Model):
+    _inherit = 'crm.product_line'
+    research_type = fields.Many2one(related='')
+    breif = fields.Char()
+    fw_country = fields.Many2one('res.country.state')
+    project_objective = fields.Many2one('project.objective')
+    research_type = fields.Selection([('ql', 'QL'),
+                                      ('qn', 'QN')])
+    data_capture = fields.Selection([('capi', 'CAPI'),
+                                     ('papi', 'PAPI')])
+    # sample_size = fields.Many2one('sample.size')
+    sample_size = fields.Char('SS')
+    number_of_legs = fields.Integer()
+    gender = fields.Selection([('male', 'Male'),
+                               ('female', 'Female'),
+                               ('both', 'Both')])
+    sec = fields.Selection(SEC)
+    # fw_country = fields.Many2one('res.country', ' Country')
+    fw_city_country = fields.Many2one('res.country', ' Country')
+    age = fields.Char('Age')
+    client_attendance = fields.Selection([('yes', 'Yes'),
+                                          ('no', 'No')])
+    no_of_respondants = fields.Integer('No of Respondants')
+    no_of_attendees = fields.Integer('No of attendees')
+
+    name = fields.Char(compute='_compute_name', string="Description")
+
+    # @api.onchange('pdt_line')
+    # def get_domain_ids(self):
+    #     print (':::get_domain_ids ::::')
+        # print({
+        #     'domain': {
+        #         'product_id': [
+        #             ('categ_id', '=', self._context['product_category_id'])
+        #         ]
+        #     }
+        # })
+    #     try:
+    #         return {
+    #             'domain': {
+    #                 'product_id': [
+    #                     ('categ_id', '=', self._context['product_category_id'])
+    #                 ]
+    #             }
+    #         }
+    #     except Exception:
+    #         return []
+
+    # @api.multi
+    @api.depends('product_id', 'fw_country', 'sec')
+    def _compute_name(self):
+        for record in self:
+            record.name = ''
+            if record.product_id:
+                record.name += record.product_id.name + ', '
+            if record.fw_country:
+                record.name += record.fw_country.name + ', '
+            if record.sec:
+                record.name += record.sec
+
+    # @api.onchange('product_id')
+    # def product_domain(self):
+    #     print(self._context)
+    #     # products = self.env['product.product'].search([
+    #     #     ('categ_id', '=', self._context['product_category_id']),
+    #     #     # ('categ_id.parent_id', '=', self._context['product_category_id'])
+    #     # ])
+    #     products_2 = self.env['product.product'].search([
+    #         # ('categ_id', '=', self._context['product_category_id']),
+    #         ('categ_id.parent_id', '=', self._context['product_category_id']),
+    #         ('purchase_ok', '=', True)
+    #     ])
+    #     # lst = products.ids
+    #     # lst.append(products_2.ids)
+    #     # print(products)
+    #     return {'domain': {'product_id': [('id', 'in', products_2.ids)], }}
+
+
+class OpportunityCostEstimation(models.Model):
+    _inherit = 'opportunity.cost.estimation'
+
+    length_of_interview = fields.Char()
+    dp = fields.Selection([('yes', 'Yes'), ('no', 'No')])
+    reporting = fields.Selection([('yes', 'Yes'), ('no', 'No')])
+    presentation = fields.Selection([('yes', 'Yes'), ('no', 'No')])
+    viewing_facility = fields.Selection([('yes', 'Yes'), ('no', 'No')])
+    client_attendance = fields.Selection([('yes', 'Yes'),
+                                          ('no', 'No')])
+
+    details = fields.Text()
+    transcript = fields.Selection(
+        [('yes', 'Yes'), ('no', 'No')],
+        string='Transcript'
+    )
+
+    objective = fields.Char('Objective')
+    methodology = fields.Char('Methodology')
+    criteria_usage = fields.Text('Criteria / Usage')
+    sample_size_text = fields.Char('Sample Size')
+    sample_struct_per_reg = fields.Char('Sample Structure per Region')
+    sample_struct_per_sec = fields.Char('Sample Structure per SEC')
+    sample_struct_per_age = fields.Char('Sample Structure per Age')
+    sample_struct_per_gen = fields.Char('Sample Structure per Gender')
+    sample_struct_per_bra = fields.Char('Sample Structure per Brand')
+    no_of_client_attendees = fields.Char('Number of Clients to Attend')
+    no_of_units_attendees = fields.Char('Number of Units Client will Attend')
+    client_attendence_region_ids = fields.Many2many(
+        'res.country.state',
+        string='Client Attendance Region'
+    )
+    cpi = fields.Float(compute='_compute_cpi')
+
+    # quotations_ids = fields.One2many(
+    #     'sale.order', 'opportunity_cost_estimation')
+
+    quotation_id = fields.Many2many('sale.order')
+    ex_transcript = fields.Selection(
+        [('yes', 'Yes'), ('no', 'No')],
+        string='Extended Transcript'
+    )
+    printing_material = fields.Selection(
+        [('yes', 'Yes'), ('no', 'No')],
+        string='Printing Material'
+    )
+    transcript_lang = fields.Char(
+        string='Transcript Language'
+    )
+    length_of_interview = fields.Char('Length of Interview')
+    translation = fields.Selection(
+        [('yes', 'Yes'), ('no', 'No')],
+        string="Simultaneous Translation"
+    )
+    other_translation = fields.Char(
+        string="Other Translation"
+    )
+    research_type_name = fields.Char(
+        'Reaseach Type Name',
+        related="estimation_type.name",
+        readonly=True,
+    )
+
+    @api.depends('order_line')
+    def _compute_cpi(self):
+        for record in self:
+            sum_qty = 0
+            sum_total_cost = 0
+            for line in record.order_line:
+                sum_qty += line.product_uom_qty
+                sum_total_cost += line.price_subtotal
+            if sum_qty:
+                record.cpi = sum_total_cost / sum_qty
+
+    @api.model
+    def change_prefix(self):
+        seq_id = self.env.ref(
+            'custom_opportunity_cost_estimation_v11.seq_cost_estimation').id
+        self.env['ir.sequence'].browse(seq_id).prefix = 'BUD/'
+
+
+class ResearchType(models.Model):
+    _name = 'research.type'
+
+    name = fields.Char(string='Research Type')
+
+
+class DataCapture(models.Model):
+    _name = 'data.capture'
+
+    name = fields.Char(string='Data Capture')
+
+
+class CustomAccountInvoice(models.Model):
+    _inherit = 'account.invoice'
+
+    custom_description = fields.Char()
+    custom_quantity = fields.Integer(compute='_compute_custom_quantity')
+    custom_unit_price = fields.Float(compute='_compute_unit_price')
+
+    @api.depends('invoice_line_ids')
+    def _compute_custom_quantity(self):
+        for record in self:
+            total = 0
+            for line in record.invoice_line_ids:
+                total += line.quantity
+
+            record.custom_quantity = total
+
+    @api.depends('invoice_line_ids')
+    def _compute_unit_price(self):
+        for record in self:
+            total = 0
+            for line in record.invoice_line_ids:
+                total += line.price_unit
+
+            record.custom_unit_price = total
+
+
+class CustomPdtLine(models.Model):
+    _inherit = 'crm.product_line'
+
+    research_type_id = fields.Char(
+        # 'product.category',
+        required=False,
+        # related='pdt_crm.research_type_id.name',
+        # default=lambda self: self.pdt_crm.research_type_id.name,
+        # compute='compute_category',
+        # store=True
+
+
+    )
+
+    # @api.model
+    # def test(self):
+    #     catg = self.pdt_crm.research_type_id.id
+    #     self.write({'research_type_id': catg})
+    #     return True
+    # @api.onchange
+
+    # @api.one
+    # @api.onchange('research_type_id')
+    # def compute_category(self):
+    #     print('::: compute_category :::')
+    #     catg = self.pdt_crm.research_type_id.id
+    #     self.write({'research_type_id': catg})
+    #     print('::: out :::')
+    #     return True
+
+    # @api.one
+    # @api.onchange('product_id')
+    # def get_domain_ids(self):
+    #     print (':::get_domain_ids ::::')
+    #     # try:
+    #     #     return {
+    #     #         'domain': {
+    #     #             'product_id': [
+    #     #                 ('categ_id', '=', self._context['product_category_id']),
+    #     #                 ('sale_ok', '=', True)
+    #     #             ]
+    #     #         }
+    #     #     }
+    #     # except Exception:
+    #     #     print('IAm Excepted')
+    #     #     return {}
+    #     # print('::: compute_category :::')
+    #     catg = self.pdt_crm.research_type_id.id
+    #     self.write({'research_type_id': catg})
+    #     return True

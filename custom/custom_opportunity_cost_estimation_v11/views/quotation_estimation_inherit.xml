@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+         <record id="estimation_quotation_view_inherit" model="ir.ui.view">
+             <field name="name">estimation quotation view</field>
+             <field name="model">sale.order</field>
+             <field name="inherit_id" ref="sale.view_order_form"/>
+             <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//page//field[@name='order_line']//list//field[@name='tax_id']" position="attributes">
+                       <attribute name="invisible">True</attribute>
+                    </xpath>
+                </data>
+            </field>
+         </record>
+    </data>
+</odoo>

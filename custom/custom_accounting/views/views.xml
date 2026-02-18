@@ -1,0 +1,111 @@
+<odoo>
+    <data>
+        <!--  <record id="invoice_form_inherit" model="ir.ui.view">
+              <field name="name">account.invoice.form.inherit</field>
+              <field name="model">account.invoice</field>
+              <field name="inherit_id" ref="account.invoice_form"/>
+              <field name="arch" type="xml">
+              <form>
+              <sheet>
+
+
+             <xpath expr="//field[@name='partner_id']" position="after">
+                                    <field name="move_name" string="info:" />
+              </xpath>
+            </sheet>
+             </form>
+              </field>
+            </record>
+
+            <record id="invoice_supplier_form_inherit" model="ir.ui.view">
+              <field name="name">account.invoice.supplier.form.inherit</field>
+              <field name="model">account.invoice</field>
+              <field name="priority">2</field>
+              <field name="inherit_id" ref="account.invoice_supplier_form"/>
+              <field name="arch" type="xml">
+                  <form string="Vendor Bill">
+                  <sheet string="Vendor Bill">
+                     <xpath expr="//field[@name='partner_id']" position="after">
+                      <field name="move_name" string="info:" />
+
+            </xpath>
+                </sheet>
+                 </form>
+              </field>
+            </record> -->
+
+        <!--        <record id="edit_view_bank_statement_form" model="ir.ui.view">-->
+        <!--            <field name="name">Remove save and add two buttons</field>-->
+        <!--            <field name="model">account.bank.statement</field>-->
+        <!--            <field name="inherit_id" ref="account.view_bank_statement_form"/>-->
+        <!--            <field name="arch" type="xml">-->
+
+        <!--                &lt;!&ndash;          <xpath expr="//form" position="attributes">&ndash;&gt;-->
+        <!--                &lt;!&ndash;            <attribute name="create">False</attribute>&ndash;&gt;-->
+        <!--                &lt;!&ndash;          </xpath>&ndash;&gt;-->
+        <!--                <xpath expr="//field[@name='name']" position="attributes">-->
+        <!--                    <attribute name="readonly">True</attribute>-->
+        <!--                </xpath>-->
+        <!--                <xpath expr="//button[@name='button_post']" position="after">-->
+        <!--                    <field invisible="True" name="hide"/>-->
+        <!--                    <button invisible="[('hide','=',True)]" class="oe_highlight" name="button_in" string="In Payment"-->
+        <!--                            type="object"/>-->
+        <!--                    <button invisible="[('hide','=',True)]" class="oe_highlight" name="button_out" string="Out Payment"-->
+        <!--                            type="object"/>-->
+        <!--                </xpath>-->
+
+        <!--            </field>-->
+        <!--        </record>-->
+        <record id="seq_account_bank_statement_in" model="ir.sequence">
+            <field name="name">account bank statement in</field>
+            <field name="code">account.bank.statement.in</field>
+            <field name="prefix">IN/</field>
+            <field name="padding">5</field>
+        </record>
+        <record id="seq_account_bank_statement_out" model="ir.sequence">
+            <field name="name">account bank statement out</field>
+            <field name="code">account.bank.statement.out</field>
+            <field name="prefix">OUT/</field>
+            <field name="padding">5</field>
+        </record>
+        <record id="account_cash_in_out_tree" model="ir.ui.view">
+            <field name="name">account.cash.in.out.tree</field>
+            <field name="model">account.cash.in.out</field>
+            <field name="arch" type="xml">
+                <list create="false" edit="false" string="Cash Report">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="debit"/>
+                    <field name="credit"/>
+                    <field name="balance"/>
+                    <field name="amount"/>
+                    <field name="rate"/>
+                    <field name="currency_id"/>
+                    <field name="reference"/>
+                    <field name="company_id" invisible="1"/>
+                </list>
+            </field>
+        </record>
+<record id="action_cash_in_out_report" model="ir.actions.server">
+            <field name="name">Cash Report</field>
+            <field name="model_id" ref="custom_accounting.model_account_cash_in_out"/>
+            <field name="state">code</field>
+            <field name="code">model.autofill()
+action = {
+"type": "ir.actions.act_window",
+"name": "Cash In Out Report",
+"view_mode": "tree",
+"res_model": "account.cash.in.out",
+}
+</field>
+        </record>
+        <menuitem
+                action="action_cash_in_out_report"
+                id="menu_action_cash_in_out_report"
+                name="Cash In Out Report"
+                parent="account_reports.account_reports_partners_reports_menu"
+                groups="account.group_account_invoice"
+                sequence="10"/>
+
+    </data>
+</odoo>

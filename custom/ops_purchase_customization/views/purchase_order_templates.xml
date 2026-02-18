@@ -1,0 +1,266 @@
+<odoo>
+    <template id="report_purchaseorder_document_inherit" inherit_id="purchase.report_purchaseorder_document">
+
+        <xpath expr="//t[@t-if='o.dest_address_id']" position="replace">
+            <t t-if="o.dest_address_id">
+                <t t-if="o.company_id.ops_emirate">
+                    <t t-set="information_block">
+                        <strong>Client:</strong>
+                        <div t-if="o.dest_address_id">
+                            <div t-field="o.dest_address_id"
+                                 t-options='{"widget": "contact", "fields": ["address", "phone"], "no_marker": True, "phone_icons": True}'
+                                 name="purchase_shipping_address"/>
+                        </div>
+
+                    </t>
+                </t>
+                <t t-if="not o.company_id.ops_emirate">
+                    <t t-set="information_block">
+                        <strong>Shipping address:</strong>
+                        <div t-if="o.dest_address_id">
+                            <div t-field="o.dest_address_id"
+                                 t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'
+                                 name="purchase_shipping_address"/>
+                        </div>
+
+                    </t>
+
+                </t>
+            </t>
+        </xpath>
+
+        <xpath expr="//div[@id='informations']" position="before">
+            <h2 t-if="o.state == 'draft'">Request for Quotation #
+                <span t-field="o.name"/>
+            </h2>
+            <t t-if="o.company_id.ops_emirate">
+                <h2 t-if="o.state in ['sent', 'to approve', 'purchase', 'done']">PO No:
+                    <span t-field="o.name"/>
+                </h2>
+            </t>
+            <t t-if="not o.company_id.ops_emirate">
+                <h2 t-if="o.state in ['sent', 'to approve']">Purchase Order #
+                    <span t-field="o.name"/>
+                </h2>
+                <h2 t-if="o.state in ['purchase', 'done']">Purchase Order #
+                    <span t-field="o.name"/>
+                </h2>
+            </t>
+            <h2 t-if="o.state == 'cancel'">Cancelled Purchase Order #
+                <span t-field="o.name"/>
+            </h2>
+        </xpath>
+        <xpath expr="//h2[preceding-sibling::t and following-sibling::div[@id='informations']]" position="replace"/>
+
+        <xpath expr="//h2[1]" position="replace"/>
+        <xpath expr="//h2[1]" position="replace"/>
+        <xpath expr="//h2[1]" position="replace"/>
+        <xpath expr="//h2[1]" position="replace"/>
+
+
+        <xpath expr="//div[@id='total']" position="replace">
+            <div class="row justify-content-between mt32 mb32">
+                <div class="col-8" style="font-size:12px;">
+                    <div style="border:1px solid black; padding:5px; width:100%;"
+                         t-if="o.company_id.name == 'OPS Emaraties'">
+                        <strong>
+                            <u>Payment Term</u>
+                        </strong>
+                        <p>
+                            Payment is due within 30 days of invoice date.
+                            <br/>
+                            Please use our invoice number reference upon payment.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <table class="table table-sm">
+                        <tr class="border-black">
+                            <td name="td_subtotal_label">
+                                <strong>Subtotal</strong>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="o.amount_untaxed"
+                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td name="td_taxes_label">Taxes</td>
+                            <td class="text-right">
+                                <span t-field="o.amount_tax"
+                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+                        <tr class="border-black o_total">
+                            <td name="td_amount_total_label">
+                                <strong>Total</strong>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="o.amount_total"
+                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </xpath>
+
+
+    </template>
+
+    <template id="report_purchaseorder_document_inherit_address" inherit_id="purchase.report_purchaseorder_document">
+
+        <xpath expr="//t[@t-set='address']/div[@t-field='o.partner_id']" position="replace">
+            <t t-if="o.company_id.ops_emirate">
+                <div>
+                    Vendor
+                    <br/>
+                    <div t-field="o.partner_id"
+                         t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                </div>
+            </t>
+            <t t-if="not o.company_id.ops_emirate">
+                <div t-field="o.partner_id"
+                     t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+            </t>
+        </xpath>
+
+    </template>
+
+    <template id="report_purchasequotation_document_inherit_address"
+              inherit_id="purchase.report_purchasequotation_document">
+
+        <xpath expr="//t[@t-if='o.dest_address_id']" position="replace">
+            <t t-if="o.dest_address_id">
+                <t t-if="o.company_id.ops_emirate">
+                    <t t-set="information_block">
+                        <strong>Client:</strong>
+                        <div t-if="o.dest_address_id">
+                            <div t-field="o.dest_address_id"
+                                 t-options='{"widget": "contact", "fields": ["address", "phone"], "no_marker": True, "phone_icons": True}'
+                                 name="purchase_shipping_address"/>
+                        </div>
+
+                    </t>
+                </t>
+                <t t-if="not o.company_id.ops_emirate">
+                    <t t-set="information_block">
+                        <strong>Shipping address:</strong>
+                        <div t-if="o.dest_address_id">
+                            <div t-field="o.dest_address_id"
+                                 t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'
+                                 name="purchase_shipping_address"/>
+                        </div>
+
+                    </t>
+
+                </t>
+            </t>
+        </xpath>
+
+
+        <xpath expr="//table[@class='table table-borderless']" position="after">
+            <div class="pull-left" style="border:1px solid black;padding:5px;width:45%;font-size:12px;">
+                <strong>
+                    <u>Payment Term</u>
+                </strong>
+                <p t-if="o.company_id.name == 'OPS UAE' or o.company_id.name == 'OPS KSA' or o.company_id.name == '@ Ops For Market Research' or o.company_id.name == 'OPS Emaraties'">
+                    Payment is due within 30 days of invoice date
+                    please use our invoice number reference upon payment
+                </p>
+                <p t-if="o.company_id.name == 'AWE Egypt'">
+                    Payment is due within 30 days of invoice date
+                    <br/>
+                    Please use our invoice number reference upon payment
+                </p>
+                <p t-if="o.company_id.name == 'AWE UAE' or o.company_id.name == 'AWE KSA'">
+                    Payment as per contract agreement or PO
+                </p>
+
+
+            </div>
+
+
+        </xpath>
+
+
+        <xpath expr="//t[@t-set='address']/div[@t-field='o.partner_id']" position="replace">
+            <t t-if="o.company_id.ops_emirate">
+                <div>
+                    Vendor
+                    <br/>
+                    <div t-field="o.partner_id"
+                         t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                </div>
+            </t>
+            <t t-if="not o.company_id.ops_emirate">
+                <div t-field="o.partner_id"
+                     t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+            </t>
+        </xpath>
+
+    </template>
+
+    <template id="report_purchaseorder_document_inherit_shipping"
+              inherit_id="purchase_stock.report_purchaseorder_document">
+        <xpath expr="//t[@t-else='']" position="replace">
+            <t t-else="">
+                <t t-if="o.company_id.ops_emirate">
+                    <t t-set="information_block">
+                        <strong>Client:</strong>
+                        <div t-if="o.picking_type_id and o.picking_type_id.warehouse_id">
+                            <!--                        <span t-field="o.picking_type_id.warehouse_id.name"/>-->
+                            <div t-field="o.picking_type_id.warehouse_id.partner_id"
+                                 t-options='{"widget": "contact", "fields": ["address", "phone"], "no_marker": True, "phone_icons": True}'/>
+                        </div>
+                    </t>
+                </t>
+
+                <t t-if="not o.company_id.ops_emirate">
+                    <t t-set="information_block">
+                        <strong>Shipping address:</strong>
+                        <div t-if="o.picking_type_id and o.picking_type_id.warehouse_id">
+                            <span t-field="o.picking_type_id.warehouse_id.name"/>
+                            <div t-field="o.picking_type_id.warehouse_id.partner_id"
+                                 t-options='{"widget": "contact", "fields": ["address", "phone"], "no_marker": True, "phone_icons": True}'/>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </xpath>
+    </template>
+
+
+    <template id="report_purchasequotation_document_inherit_shipping"
+              inherit_id="purchase_stock.report_purchasequotation_document">
+        <xpath expr="//t[@t-else='']" position="replace">
+            <t t-else="">
+                <t t-if="o.company_id.ops_emirate">
+                    <t t-set="information_block">
+                        <strong>Client:</strong>
+                        <div t-if="o.picking_type_id and o.picking_type_id.warehouse_id">
+                            <!--                        <span t-field="o.picking_type_id.warehouse_id.name"/>-->
+                            <div t-field="o.picking_type_id.warehouse_id.partner_id"
+                                 t-options='{"widget": "contact", "fields": ["address", "phone"], "no_marker": True, "phone_icons": True}'/>
+                        </div>
+                    </t>
+                </t>
+
+                <t t-if="not o.company_id.ops_emirate">
+                    <t t-set="information_block">
+                        <strong>Shipping address:</strong>
+                        <div t-if="o.picking_type_id and o.picking_type_id.warehouse_id">
+                            <span t-field="o.picking_type_id.warehouse_id.name"/>
+                            <div t-field="o.picking_type_id.warehouse_id.partner_id"
+                                 t-options='{"widget": "contact", "fields": ["address", "phone"], "no_marker": True, "phone_icons": True}'/>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </xpath>
+    </template>
+
+
+</odoo>
+

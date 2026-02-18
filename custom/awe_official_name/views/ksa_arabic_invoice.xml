@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>     <!--        ٠ ١ ٢ ٣ ٤ ٥ ٦ ٧ ٨ ٩ -->
+    <template id="report_ksa_invoice_arabic">
+        <t t-call="web.external_layout">
+            <t t-set="o" t-value="o.with_context(lang='ar')"/>
+            <div class="page" style="text-align:right;">
+                <div class="row">
+                    <h5 style="text-align:center;">
+                        <b>شركة اوسم للخدمات التجارية</b>
+                    </h5>
+
+                    <div>,مكتب رقم 6 بالدور الثالث بالعمارة رقم ٣٨ الغفارى بلازا بحي السلامة</div>
+                    <div>مدينة جدة - المملكة العربية السعودية</div>
+                    <div>(+)ت. ٩٦٦١٢٦٣٩٥٢٢٥</div>
+                    <div>
+                        <a t-attf-href="http://www.aweresearch.com">www.aweresearch.com</a>
+                    </div>
+                    <div>رقم السجل التجاري: ٤٠٣٠٤٤١١١١</div>
+                    <div style="white-space: nowrap;">رقم التسجيل في ضريبة القيمة المضافة: ٣١٠٣٦٩٢٤٩٣٠٠٠٠٣</div>
+                    <div>رقم الملف: ١٩٥٣٨٦٤-٩</div>
+                </div>
+                <div style="float:left; margin-top:5%;">
+                    <strong>:إلى</strong>
+                    <br/>
+                    <div>
+                        <address t-field="o.partner_id"
+                                 t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                    </div>
+                    <div t-if="o.partner_id.cr_numb">
+                        <span t-field="o.partner_id.cr_numb"/>
+                        <span>: رقم السجل التجاري</span>
+                    </div>
+                    <div t-if="o.partner_id.vat">
+                        <span t-field="o.partner_id.vat"/>
+                        <span>: رقم التسجيل بضريبة القيمة المضافة</span>
+                    </div>
+                    <div t-if="o.partner_id.email">
+                        <span t-field="o.partner_id.email"/>
+                        <span>: البريد الإلكتروني</span>
+                    </div>
+                    <div t-if="o.partner_id.phone">
+                        <span t-field="o.partner_id.phone"/>
+                        <span>: رقم التليفون</span>
+                    </div>
+                    <div t-if="o.partner_id.child_ids">
+                        <span>: موجهة إلى</span>
+                        <div t-foreach="o.partner_id.child_ids" t-as="l">
+                            <span t-field="l.name"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:5%;">
+                    <div>
+                        <span t-field="o.invoice_date"/>
+                        <span>: التاريخ</span>
+                    </div>
+                    <div>
+                        <span t-field="o.name"/>
+                        <span>: رقم الفاتورة</span>
+                    </div>
+                    <div>
+                        <span t-field="o.invoice_origin"/>
+                        <span>: رقم المشروع</span>
+                    </div>
+                    <div>
+                        <span t-field="o.po_num"/>
+                        <span>: رقم أمر الشراء</span>
+                    </div>
+                    <div>
+                        <span t-field="o.vendor_num"/>
+                        <span>: رقم المورد</span>
+                    </div>
+                </div>
+
+                <!-- Is there a discount on at least one line? -->
+                <t t-set="display_discount" t-value="any([l.discount for l in o.invoice_line_ids])"/>
+                <h4 style="text-align:center;" t-if="o.move_type in ('out_invoice','in_invoice')">فاتورة ضريبية</h4>
+                <h4 style="text-align:center;" t-if="o.move_type in ('out_refund','in_refund')">اشعار دائن</h4>
+                <table class="table table-condensed" name="invoice_line_table" style="margin-top:2%;">
+                    <thead>
+                        <tr>
+                            <th class="text-right">إجمالي السعر</th>
+                            <th class="text-right">الضريبة</th>
+                            <th t-if="display_discount" class="text-right">Disc.(%)</th>
+                            <th class="text-right">سعر الوحدة</th>
+                            <th class="text-right">الكمية</th>
+                            <th class="hidden">Source Document</th>
+                            <th class="text-right">البيان</th>
+                        </tr>
+                    </thead>
+                    <tbody class="invoice_tbody">
+                        <tr t-foreach="o.invoice_line_ids" t-as="l">
+
+
+                            <td class="text-right" id="subtotal" style="background-color:Gainsboro;">
+                                <span t-field="l.price_subtotal"
+                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                            <td>
+                                <span t-foreach="l.tax_ids" t-as="x" class="text-right">
+                                    <span t-field="x.name"/>
+                                    <br/>
+                                </span>
+                            </td>
+                            <td t-if="display_discount" class="text-right">
+                                <span t-field="l.discount"/>
+                            </td>
+                            <td class="text-right">
+                                <t t-set="tmp" t-value="str(l.price_unit)"/>
+                                <span t-if="tmp[::-1].find('.') == 1" t-esc="tmp + '0'"/>
+                                <span t-if="tmp[::-1].find('.') == 2" t-esc="tmp"/>
+                                <span t-if="tmp[::-1].find('.') > 2" t-esc="tmp[:tmp.find('.') + 3]"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="l.quantity"/>
+                                <span t-field="l.product_uom_id" groups="uom.group_uom"/>
+                            </td>
+                            <td class="hidden">
+                                <!--                                    <span t-field="l.invoice_origin"/>-->
+                            </td>
+                            <td class="text-right" style="background-color:white;">
+                                <span t-field="l.name"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="clearfix">
+                    <div id="total" class="row">
+                        <div class="col-xs-4 pull-right" style="margin-right:5px;">
+                            <table class="table table-condensed"
+                                   style="min-width: 250px;max-width: 400px;page-break-inside: avoid;">
+                                <tr class="border-black" style="border-bottom:1px solid #dddddd;">
+                                    <td class="text-left">
+                                        <span t-field="o.amount_untaxed"
+                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                    <td class="text-right" style="white-space: nowrap;">
+                                        <strong>الإجمالي بدون ضريبة</strong>
+                                    </td>
+                                </tr>
+                                <t t-foreach="o.amount_by_group" t-as="amount_by_group">
+                                    <tr style="border-bottom:1px solid #dddddd;white-space: nowrap;">
+                                        <t>
+                                            <td>
+                                                <span t-esc="amount_by_group[3]"/>
+                                            </td>
+                                            <td class="text-right" style="white-space: nowrap;">
+                                                <span>% ضريبة القيمة المضافة</span>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </t>
+
+                                <tr class="border-black">
+                                    <td class="text-left">
+                                        <span t-field="o.amount_total"
+                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                    <td class="text-right" style="white-space: nowrap;">
+                                        <strong>الإجمالي بالضريبة</strong>
+                                    </td>
+                                </tr>
+                                <tr class="border-black">
+                                    <td class="text-right">
+                                        فقط
+                                        <span t-field="o.amount_to_text_arabic"/>
+                                        لا غير
+                                    </td>
+                                    <td class="text-right" style="white-space: nowrap;">
+                                        <strong>إجمالي المستحق</strong>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <p t-if="o.narration">
+                    <span t-field="o.narration"/>
+                </p>
+                <p t-if="o.invoice_payment_term_id">
+                    <span t-field="o.invoice_payment_term_id.note"/>
+                </p>
+                <p t-if="o.fiscal_position_id.note">
+                    <span t-field="o.fiscal_position_id.note"/>
+                </p>
+                <div class="pull-left" style="border:1px solid black;padding:5px;width:45%">
+                    <strong>
+                        <u>شروط الدفع</u>
+                    </strong>
+                    <p>
+                        كما هو متفق عليه في العقد المبرم او أمر الشراء
+                    </p>
+                </div>
+                <div class="row" style="margin-right:5px;">
+                    <strong>
+                        <u>التوقيع المعتمد</u>
+                    </strong>
+                </div>
+                <div class="pull-left"
+                     style="border:1px solid black;padding:5px;width:45%;clear: both;margin-top:5px;">
+                    <span>: يمكنك الدفع بالتحويل المباشر إلى</span>
+                    <p class="text-left">
+                        <br/>
+                        <strong dir="ltr">Awesome M Research‬</strong>
+                        <br/>
+                        <span>Account No: 895-046746-001</span>
+                        <br/>
+                        <span>IBAN(SA6145000000895046746001)</span>
+                        <br/>
+                        <span>SWIFT CODE: (SABBSARI)</span>
+                        <br/>
+                        <span>SHB</span>
+                        <span>PO. BOX 67</span>
+                        <br/>
+                        <span>Jeddah, Saudia Arabia 21411</span>
+                    </p>
+                </div>
+
+
+            </div>
+        </t>
+    </template>
+
+    <template id="awe_ksa_invoice_arabic">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="awe_official_name.report_ksa_invoice_arabic" t-lang="ar"/>
+            </t>
+        </t>
+    </template>
+
+
+</odoo>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_caged_report" model="ir.cron">
+        <field name="name">Aaged Report</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="state">code</field>
+        <field name="code">model.count_days_open_invoice()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+<!--        <field name="numbercall">-1</field>-->
+<!--        <field name="doall" eval="False"/>-->
+    </record>
+
+<!--    <data noupdate="1">-->
+<!--        <record id="project_closure_sequence_awe_ksa" model="ir.sequence">-->
+<!--            <field name="name">Project Closure</field>-->
+<!--            <field name="prefix">PR.C.</field>-->
+<!--            <field name="padding">5</field>-->
+<!--            <field name="company_id">4</field>-->
+<!--            <field name="implementation">no_gap</field>-->
+<!--        </record>-->
+<!--        <record id="project_closure_sequence_awe_egypt" model="ir.sequence">-->
+<!--            <field name="name">Project Closure</field>-->
+<!--            <field name="prefix">PR.C.</field>-->
+<!--            <field name="padding">5</field>-->
+<!--            <field name="company_id">3</field>-->
+<!--            <field name="implementation">no_gap</field>-->
+<!--        </record>-->
+<!--        <record id="project_closure_sequence_awe_uae" model="ir.sequence">-->
+<!--            <field name="name">Project Closure</field>-->
+<!--            <field name="prefix">PR.C.</field>-->
+<!--            <field name="padding">5</field>-->
+<!--            <field name="company_id">5</field>-->
+<!--            <field name="implementation">no_gap</field>-->
+<!--        </record>-->
+<!--    </data>-->
+
+</odoo>

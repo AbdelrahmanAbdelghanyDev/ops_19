@@ -1,0 +1,31 @@
+<odoo>
+    <record id="awe_res_partner_inherit" model="ir.ui.view">
+        <field name="name">awe res partner</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="official_name" placeholder="The Official Name"/>
+            </xpath>
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="cr_numb" placeholder="e.g. BE0477472701"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="uae_tax_amount" model="ir.ui.view">
+        <field name="name">uae_tax_amount</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@id='invoice_tab']" position="inside">
+                <field name="show_emirate_columns" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//notebook/page[@id='invoice_tab']/field[@name='invoice_line_ids']/list/field[@name='tax_ids']"
+                   position="after">
+                <field name="tax_amount" column_invisible="[('parent.show_emirate_columns','=',False)]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

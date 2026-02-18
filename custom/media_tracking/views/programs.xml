@@ -1,0 +1,63 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+        <record model="ir.ui.view" id="programs_list">
+            <field name="name">Programs list</field>
+            <field name="model">a.programs</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="other"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- explicit form view definition -->
+        <record model="ir.ui.view" id="programs_form">
+            <field name="name">Programs form</field>
+            <field name="model">a.programs</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <label class="oe_edit_only" for="name"/>
+                            <h1><field name="name"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="other"/>
+                            </group>
+                        </group>
+                        <field name="program_line_ids">
+                            <list editable="bottom">
+                                <field name="media_channel_id" required="True"/>
+                                <field name="period" required="True"/>
+<!--                                <field name="header"/>-->
+                                <field name="date_from_id" required="True"/>
+                                <field name="date_to_id" required="True"/>
+                            </list>
+                        </field>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <!-- actions opening views on models -->
+
+        <record model="ir.actions.act_window" id="programs_action_window">
+            <field name="name">Programs </field>
+            <field name="res_model">a.programs</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+
+        <!-- Menu -->
+
+        <menuitem name="Programs" id="programs_menu_1_list" parent="media_tracking_conf_menu"
+                  action="programs_action_window" sequence="1"/>
+
+    </data>
+</odoo>

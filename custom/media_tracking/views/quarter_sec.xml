@@ -1,0 +1,38 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="quarter_sec_list">
+            <field name="name">TV rating by the program (15 mins) list</field>
+            <field name="model">a.quarter</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="duration"/>
+                    <field name="channel_id"/>
+                    <field name="programs_id"/>
+                    <field name="base"/>
+                    <field name="week_day"/>
+                    <field name="week_end"/>
+                    <field name="base_A" optional="show"/>
+                    <field name="week_end_A" optional="show"/>
+                    <field name="week_day_A" optional="show"/>
+
+                    <field name="base_B" optional="hidden"/>
+                    <field name="week_end_B" optional="hidden"/>
+                    <field name="week_day_B" optional="hidden"/>
+
+                    <field name="base_C1" optional="hidden"/>
+                    <field name="week_end_C1" optional="hidden"/>
+                    <field name="week_day_C1" optional="hidden"/>
+
+                    <field name="base_C2" optional="hidden"/>
+                    <field name="week_end_C2" optional="hidden"/>
+                    <field name="week_day_C2" optional="hidden"/>
+
+                    <field name="base_DE" optional="hidden"/>
+                    <field name="week_end_DE" optional="hidden"/>
+                    <field name="week_day_DE" optional="hidden"/>
+
+                </list>
+            </field>
+        </record>
+    </data>
+</odoo>

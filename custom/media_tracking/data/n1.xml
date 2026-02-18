@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="n1_1" model="a.n1">
+            <field name="name">نعم بتفرج ومتابع</field>
+        </record>
+        <record id="n1_2" model="a.n1">
+            <field name="name">نعم بتفرج بس مش متابع باستمرار</field>
+        </record>
+        <record id="n1_3" model="a.n1">
+            <field name="name">لا,بس بدخل على الانترنت عادي</field>
+        </record>
+        <record id="n1_4" model="a.n1">
+            <field name="name">لا أنا مبدخلش على الانترنت</field>
+        </record>
+    </data>
+</odoo>

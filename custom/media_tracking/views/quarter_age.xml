@@ -1,0 +1,53 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="quarter_age_list">
+            <field name="name">TV rating by the program (15 mins) list</field>
+            <field name="model">a.quarter</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="duration"/>
+                    <field name="channel_id"/>
+                    <field name="programs_id"/>
+                    <field name="base"/>
+                    <field name="week_day"/>
+                    <field name="week_end"/>
+                    <field name="base_2" optional="show"/>
+                    <field name="week_end_2" optional="show"/>
+                    <field name="week_day_2" optional="show"/>
+
+                    <field name="base_3" optional="hidden"/>
+                    <field name="week_end_3" optional="hidden"/>
+                    <field name="week_day_3" optional="hidden"/>
+
+                    <field name="base_4" optional="hidden"/>
+                    <field name="week_end_4" optional="hidden"/>
+                    <field name="week_day_4" optional="hidden"/>
+
+                    <field name="base_5" optional="hidden"/>
+                    <field name="week_end_5" optional="hidden"/>
+                    <field name="week_day_5" optional="hidden"/>
+
+                    <field name="base_6" optional="hidden"/>
+                    <field name="week_end_6" optional="hidden"/>
+                    <field name="week_day_6" optional="hidden"/>
+
+                    <field name="base_7" optional="hidden"/>
+                    <field name="week_end_7" optional="hidden"/>
+                    <field name="week_day_7" optional="hidden"/>
+
+                    <field name="base_8" optional="hidden"/>
+                    <field name="week_end_8" optional="hidden"/>
+                    <field name="week_day_8" optional="hidden"/>
+
+                    <field name="base_9" optional="hidden"/>
+                    <field name="week_end_9" optional="hidden"/>
+                    <field name="week_day_9" optional="hidden"/>
+
+                    <field name="base_10" optional="hidden"/>
+                    <field name="week_end_10" optional="hidden"/>
+                    <field name="week_day_10" optional="hidden"/>
+                </list>
+            </field>
+        </record>
+    </data>
+</odoo>

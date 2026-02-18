@@ -1,0 +1,8 @@
+<odoo>
+     <record id="group_project_task_revenue" model="res.groups">
+        <field name="name">Projects Tasks Revenues</field>
+    </record>
+    <record id="group_project_task_cost" model="res.groups">
+        <field name="name">Projects Tasks Cost / WIP</field>
+    </record>
+</odoo>

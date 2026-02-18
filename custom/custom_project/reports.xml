@@ -1,0 +1,78 @@
+<odoo>
+    <data>
+
+        <!-- ####################### Projects Report #################### -->
+        <report
+            id="reports_project"
+            model="project.project"
+            string="Projects Report"
+            name="custom_project.report_project_view"
+            file="custom_project.report_project"
+            report_type="qweb-pdf" />
+
+        <!-- ####################### Report Template #################### -->
+        <template id="report_project_view">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+
+                        <!-- Include Custom CSS directly -->
+                        <style>
+                            @import url("/custom_project/static/src/css/style.css");
+                        </style>
+
+                        <div class="page">
+                            <div class="oe_structure"/>
+                            <h2>Daily Report</h2>
+                            <table style="width:100%">
+                                <tr>
+                                    <th colspan="5"><span t-field="doc.name"/></th>
+                                    <th colspan="2">PROJECT START: <span t-field="doc.date_start"/></th>
+                                    <th colspan="2">APPROX. PROJECT END: <span t-field="doc.date"/></th>
+                                    <th colspan="1">Place Holder</th>
+                                </tr>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Actual Start Time</th>
+                                    <th>Actual End Time</th>
+                                    <th>Travelling Time</th>
+                                    <th>Team</th>
+                                    <th style="width:2%">OT</th>
+                                    <th>Task</th>
+                                    <th>Remarks</th>
+                                    <th style="width:8%">Status</th>
+                                    <th style="width:33% !important;">Picture</th>
+                                </tr>
+                                <t t-foreach="doc.task_ids" t-as="task">
+                                    <tr>
+                                        <th>
+                                            <span t-field="task.date_start_splited"/><br/>/<br/><span t-field="task.date_end_splited"/>
+                                        </th>
+                                        <th><span t-field="task.time_start"/></th>
+                                        <th><span t-field="task.time_end"/></th>
+                                        <th><span t-field="task.traveling_time"/></th>
+                                        <th>
+                                            <span t-field="task.team_id.name"/><br/>
+                                            <t t-foreach="task.team_id.member_ids" t-as="member">
+                                                <span t-field='member.name'/> /
+                                            </t>
+                                        </th>
+                                        <th> </th>
+                                        <th><span t-field="task.name"/></th>
+                                        <th><span t-field="task.description"/></th>
+                                        <th><span t-field="task.stage_id.name"/></th>
+                                        <th style="width:33% !important;">
+                                            <span t-field="task.original_image" t-field-options="{'widget':'image'}"/>
+                                        </th>
+                                    </tr>
+                                </t>
+                            </table>
+                        </div>
+
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

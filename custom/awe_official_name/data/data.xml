@@ -1,0 +1,9 @@
+<odoo>
+    <record id="awe_official_name.awe_ksa_invoice" model="ir.actions.report">
+        <field name="name">AWE KSA Invoice Arabic</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">awe_official_name.awe_ksa_invoice_arabic</field>
+        <field name="group_ids" eval="[(4, ref('awe_official_name.group_invoice_arabic'))]"/>
+    </record>
+</odoo>

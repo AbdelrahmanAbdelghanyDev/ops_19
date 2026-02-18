@@ -1,0 +1,135 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+        <record model="ir.ui.view" id="full_gender_list">
+            <field name="name">Tv rating by Program (Total) list</field>
+            <field name="model">a.full</field>
+            <field name="arch" type="xml">
+                <list create="0" duplicate="0" delete="0">
+                    <field name="programs_id"/>
+                    <field name="media_channel_id"/>
+                    <field name="time_from"
+                           options="{'no_open': True,'no_create':True, 'no_quick_create': True, 'no_create_edit':True}"/>
+<!--                    <field name="header_from"/>-->
+                    <field name="time_to"
+                           options="{'no_open': True,'no_create':True, 'no_quick_create': True, 'no_create_edit':True}"/>
+<!--                    <field name="header_to"/>-->
+                    <field name="avg_rate"/>
+                    <field name="total_rate"/>
+<!--                    <field name="reach"/>-->
+                    <field name="base"/>
+                    <field name="base_male"/>
+                    <field name="base_female"/>
+                    <field name="base_cairo"/>
+                    <field name="base_alex"/>
+                    <field name="base_delta"/>
+                    <field name="base_ue"/>
+                    <field name="base_canal_red_sea"/>
+                    <field name="base_2"/>
+                    <field name="base_3"/>
+                    <field name="base_4"/>
+                    <field name="base_5"/>
+                    <field name="base_6"/>
+                    <field name="base_7"/>
+                    <field name="base_8"/>
+                    <field name="base_9"/>
+                    <field name="base_10"/>
+                    <field name="base_a"/>
+                    <field name="base_b"/>
+                    <field name="base_c1"/>
+                    <field name="base_c2"/>
+                    <field name="base_de"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="full_view_pivot" model="ir.ui.view">
+            <field name="name">Tv rating by Program (Total) Pivot</field>
+            <field name="model">a.full</field>
+            <field name="arch" type="xml">
+                <pivot string="Tv rating by Program (Total)">
+                    <field name="programs_id" type="row"/>
+                    <field name="media_channel_id" type="row"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="full_gender_total_sample_list">
+            <field name="name">Tv rating by Program (Total) list</field>
+            <field name="model">a.full.total.sample</field>
+            <field name="arch" type="xml">
+                <list create="0" duplicate="0" delete="0">
+                    <field name="programs_id"/>
+                    <field name="media_channel_id"/>
+                    <field name="time_from"
+                           options="{'no_open': True,'no_create':True, 'no_quick_create': True, 'no_create_edit':True}"/>
+<!--                    <field name="header_from"/>-->
+                    <field name="time_to"
+                           options="{'no_open': True,'no_create':True, 'no_quick_create': True, 'no_create_edit':True}"/>
+<!--                    <field name="header_to"/>-->
+                    <field name="avg_rate"/>
+                    <field name="total_rate"/>
+<!--                    <field name="reach"/>-->
+                    <field name="base"/>
+                    <field name="base_male"/>
+                    <field name="base_female"/>
+                    <field name="base_cairo"/>
+                    <field name="base_alex"/>
+                    <field name="base_delta"/>
+                    <field name="base_ue"/>
+                    <field name="base_canal_red_sea"/>
+                    <field name="base_2"/>
+                    <field name="base_3"/>
+                    <field name="base_4"/>
+                    <field name="base_5"/>
+                    <field name="base_6"/>
+                    <field name="base_7"/>
+                    <field name="base_8"/>
+                    <field name="base_9"/>
+                    <field name="base_10"/>
+                    <field name="base_a"/>
+                    <field name="base_b"/>
+                    <field name="base_c1"/>
+                    <field name="base_c2"/>
+                    <field name="base_de"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="full_total_sample_view_pivot" model="ir.ui.view">
+            <field name="name">Tv rating by Program (Total) Pivot</field>
+            <field name="model">a.full.total.sample</field>
+            <field name="arch" type="xml">
+                <pivot string="Tv rating by Program (Total)">
+                    <field name="programs_id" type="row"/>
+                    <field name="media_channel_id" type="row"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- actions opening views on models -->
+
+        <record model="ir.actions.act_window" id="full_action_window">
+            <field name="name">Tv rating by Program (Total)</field>
+            <field name="res_model">a.full</field>
+            <field name="view_mode">list</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="full_total_sample_action_window">
+            <field name="name">Tv rating by Program (Total) (total sample)</field>
+            <field name="res_model">a.full.total.sample</field>
+            <field name="view_mode">list</field>
+        </record>
+
+
+        <!-- Menu -->
+
+        <menuitem name="Tv rating by Program (Total) New Methodology" id="full_menu_1_list" parent="media_tracking_reports_menu"
+                  action="full_action_window" sequence="2"/>
+
+        <menuitem name="Tv rating by Program (Total) (total sample) Old Methodology" id="full_menu_total_sample"
+                  parent="media_tracking_reports_menu"
+                  action="full_total_sample_action_window" sequence="2"/>
+
+    </data>
+</odoo>

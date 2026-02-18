@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_gender">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure">
+                        <div class="row">
+                            <table class="table table-bordered" style="border: 1px solid #000;">
+                                <tbody>
+                                    <tr>
+                                        <th style="text-align: center;color: #000;text-color: #000;"
+                                            colspan="3"></th>
+                                        <th style="text-align: center;color: #000;text-color: #000;" colspan="3">
+                                            Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;" colspan="3">
+                                            Male</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;" colspan="3">
+                                            Female</th>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align: center;color: #000;text-color: #000;">Date</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">Channel</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">Program</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+                                                        <!--  Gender-->
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+                                                        <!--  Region  -->
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+                                         <!--  Age  -->
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+
+                                         <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+                                                <!--SEC-->
+
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+
+                                         <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+
+                                        <th style="text-align: center;color: #000;text-color: #000;">Base</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WD</th>
+                                        <th style="text-align: center;color: #000;text-color: #000;">WE</th>
+                                    </tr>
+                                    <t t-foreach="result" t-as="l">
+
+                                        <tr>
+
+                                            <td style="height:5px;color: #000;text-color: #000"><t
+                                                    t-esc="l['duration']"/></td>
+                                            <td style="height:5px;color: #000;text-color: #000"><t
+                                                    t-esc="l['channel']"/></td>
+                                            <td style="height:5px;color: #000;text-color: #000"><t
+                                                    t-esc="l['program']"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

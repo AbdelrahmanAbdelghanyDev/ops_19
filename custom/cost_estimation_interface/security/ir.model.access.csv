@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cost_product_line,cost.product.line,model_cost_product_line,base.group_user,1,1,1,1
+access_cost_product_line_viewer,cost.product.line,model_cost_product_line,group_cost_est_viewer,1,0,0,0
+access_cost_product_line_user,cost.product.line,model_cost_product_line,group_cost_est_user,1,1,1,1
+access_cost_product_line_1st,cost.product.line,model_cost_product_line,group_cost_est_1st_app,1,1,1,1
+access_cost_product_line_2nd,cost.product.line,model_cost_product_line,group_cost_est_2nd_app,1,1,1,1

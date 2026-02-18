@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cost_accounts,cost_accounts,model_cost_accounts,base.group_user,1,1,1,1
+access_revenue_accounts,revenue_accounts,model_revenue_accounts,base.group_user,1,1,1,1
+

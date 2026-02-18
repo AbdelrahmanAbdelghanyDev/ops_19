@@ -1,0 +1,11 @@
+<odoo>
+    <report
+            id="action_report_cost_estimation_xlsx"
+            model="cost.estimation"
+            string="Export Cost Estimation"
+            report_type="xlsx"
+            name="cost_estimation.report_cost_estimation_xlsx"
+            file="Cost_Estimation"
+            print_report_name="'Cost Estimation - %s' % (object.seq or '')"
+    />
+</odoo>

@@ -1,0 +1,353 @@
+<odoo>
+    <data>
+
+        <!-- explicit list view definition -->
+        <record id="opportunity_cost_estimation_tree" model="ir.ui.view">
+            <field name="name">opportunity_cost_estimation.tree</field>
+            <field name="model">opportunity.cost.estimation</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field invisible="True" name="pricelist_id"/>
+                    <field invisible="True" name="currency_id"/>
+                    <field invisible="True" name="company_id"/>
+                    <field name="parent_opportunity" string="Opportunity"/>
+                    <field name="partner_id" string="Customer"/>
+                    <field name="amount_total" string="Total"/>
+                    <field name="state" string="Status"/>
+                    <field context="{'default_parent_cost': id}" invisible="True" mode="tree" name="order_line"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- explicit form view definition -->
+        <record id="opportunity_cost_estimation_form" model="ir.ui.view">
+            <field name="name">opportunity_cost_estimation.form</field>
+            <field name="model">opportunity.cost.estimation</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button invisible="['|', ('state','=','done'), ('state','=','cancel')]"
+                                class="oe_highlight" name="action_approve" string="Approve" type="object"/>
+                        <button invisible="[('state','=','cancel')]" name="action_cancel" string="Cancel"
+                                type="object"/>
+                        <!-- <button attrs="{'invisible':['|', ('state','=','draft'), ('state','=','done') ]}" name="action_draft" string="Set to Draft" type="object"/> -->
+                        <field name="state" statusbar_visible="draft,done" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="partner_id" string="Customer"/>
+                                <field name="template_id" string="Estimation Template"/>
+                                <field invisible="True" name="pricelist_id"/>
+                                <field name="parent_opportunity" string="Source document"/>
+                            </group>
+                            <group>
+                                <field name="date_order" string="Estimation Date"/>
+                                <field name="validity_date"/>
+                                <field name="estimation_type" string="Estimation Type"/>
+                                <!-- <field name="payment_term_id"/>-->
+                            </group>
+                            <!-- <field invisible="True" name="fake_id"/> -->
+                        </group>
+                        <group>
+                            <notebook>
+                                <page string="Estimation line">
+                                    <field context="{'default_parent_cost': id}" mode="list" name="order_line">
+                                        <list editable="bottom">
+                                            <field name="product_id"/>
+                                            <field invisible="True" name="order_id"/>
+                                            <field name="company_id" invisible="1"/>
+                                            <field invisible="True" name="order_partner_id"/>
+                                            <field name="name"/>
+                                            <field invisible="True" name="salesman_id"/>
+                                            <field name="product_uom_qty" string="Qty"/>
+                                            <field name="product_uom_category_id" invisible="1"/>
+                                            <field groups="uom.group_uom" name="product_uom" string="Unit of Measure"/>
+                                            <field name="no_of_units" string="Units"/>
+                                            <field name="price_unit" string="Unit Price"/>
+                                            <field name="price_subtotal_new" string="Subtotal" sum="Total"/>
+                                            <field name="tax_id" widget="many2many_tags"/>
+                                            <field name="no_of_waves" string="Waves"/>
+                                            <field name="price_subtotal" string="Total" sum="Total" widget="monetary"/>
+                                            <!-- <field name="" sum="" widget=""/>-->
+                                        </list>
+                                    </field>
+                                    <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                                        <field name="amount_untaxed" options="{'currency_field': 'currency_id'}"
+                                               widget="monetary"/>
+                                        <field name="amount_tax" options="{'currency_field': 'currency_id'}"
+                                               widget="monetary"/>
+                                        <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                            <label for="amount_total"/>
+                                            <!-- <button name="button_dummy" states="draft,sent" string="(update)" type="object" class="oe_edit_only oe_link"/>-->
+                                        </div>
+                                        <field class="oe_subtotal_footer_separator" name="amount_total" nolabel="1"
+                                               options="{'currency_field': 'currency_id'}" widget="monetary"/>
+                                    </group>
+                                </page>
+                                <page name="Products" string="Products">
+                                    <field invisible="True" name="pdt_line"/>
+                                    <field name="pdt_line_view">
+                                        <list editable="bottom">
+                                            <!-- <attribute name="domain">[('category', 'like', 'Saleable')]</attribute>-->
+                                            <field name="product_id"/>
+                                            <field name="name"/>
+                                            <field name="category"/>
+                                            <field name="product_uom_qty"/>
+                                            <field invisible="True" name="price_unit"/>
+                                            <field invisible="True" name="market_price"/>
+                                            <field invisible="True" name="qty_hand"/>
+                                            <field name="uom_id"/>
+                                        </list>
+                                    </field>
+                                </page>
+                                <page name="brief" string="Brief">
+                                    <group>
+                                        <group>
+                                            <field name="research_type" readonly="True"/>
+                                            <field name="approach" readonly="True"/>
+                                            <field name="methodology" readonly="True"/>
+                                            <field name="number_of_legs" readonly="True"/>
+                                        </group>
+                                        <group>
+                                            <field name="sample_size" readonly="True"/>
+                                            <field name="gender" readonly="True"/>
+                                            <field name="sec" readonly="True" string="SEC"/>
+                                            <field name="age" readonly="True"/>
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <group>
+                                            <field name="region" readonly="True"/>
+                                            <field name="usership" readonly="True"/>
+                                            <field name="moub" readonly="True" string="MOUB"/>
+                                        </group>
+                                    </group>
+                                </page>
+                            </notebook>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- related to Cost Estimation button -->
+        <record id="custom_opportunity_cost_estimation_opportunity_cost_estimation_tree" model="ir.actions.act_window">
+            <field name="name">New estimate</field>
+            <field name="res_model">opportunity.cost.estimation</field>
+            <field name="domain">[('parent_opportunity', '=', active_id)]</field>
+            <field name="context">{'search_default_opportunity_id': [active_id],
+                'default_parent_opportunity': active_id, 'default_opportunity_id': active_id,
+                'default_parent_id': active_id, }
+            </field>
+        </record>
+        <!-- end -->
+
+        <record id="opportunity_cost_estimation" model="ir.ui.view">
+            <field name="name">opportunity cost estimation</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="sale_crm.crm_case_form_view_oppor"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//button[@name='action_set_won_rainbowman']" position="before">
+                        <button class="oe_highlight" name="new_cost_estimation" string="New Budget" type="object"/>
+                    </xpath>
+                    <xpath expr="//button[@name='action_schedule_meeting']" position="after">
+                        <!-- <field invisible="True" name="fake_id"/> -->
+                        <field invisible="True" name="research_type"/>
+                        <field invisible="True" name="approach"/>
+                        <field invisible="True" name="methodology"/>
+                        <field invisible="True" name="number_of_legs"/>
+                        <field invisible="True" name="sample_size"/>
+                        <field invisible="True" name="age"/>
+                        <field invisible="True" name="gender"/>
+                        <field invisible="True" name="sec"/>
+                        <field invisible="True" name="region"/>
+                        <field invisible="True" name="usership"/>
+                        <field invisible="True" name="moub"/>
+                        <button class="btn btn-sm oe_stat_button"
+                                context="{
+            'default_opportunity_id': id,
+            'default_partner_id': partner_id,
+            'default_research_type': research_type,
+            'default_approach': approach,
+            'default_methodology': methodology,
+            'default_number_of_legs': number_of_legs,
+            'default_sample_size': sample_size,
+            'default_age': age,
+            'default_gender': gender,
+            'default_sec': sec,
+            'default_region': region,
+            'default_usership': usership,
+            'default_moub': moub
+        }"
+                                icon="fa-pencil-square-o"
+                                name="%(custom_opportunity_cost_estimation_opportunity_cost_estimation_tree)d"
+                                type="action">
+                            <div class="o_form_field o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="cost_estimation_number"/>
+                                </span>
+                                <span class="o_stat_text">Estimation(s)</span>
+                            </div>
+                        </button>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+
+        <record id="custom_s_order_form_view" model="ir.ui.view">
+            <field name="name">sale view order form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='partner_id']" position="after">
+                        <field name="project_objective" string="Project Objective"/>
+                        <field name="project_type" string="Project Type"/>
+                        <field name="sector_id"/>
+                    </xpath>
+                    <xpath expr="//field[@name='payment_term_id']" position="after">
+                        <field name="parent_opportunity" string="Source Document"/>
+                        <field groups="custom_opportunity_cost_estimation_v11.group_viewer"
+                               name="opportunity_cost_estimation" string="Cost Estimation" widget="many2many_tags"/>
+                        <field invisible="True" name="opportunity_total_cost" string="Total Cost"/>
+                        <field groups="custom_opportunity_cost_estimation_v11.group_viewer"
+                               name="opportunity_total_cost_2" string="Total cost"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+        <!-- ======================================================================================= -->
+
+        <record id="view_cost_estimate_template_form" model="ir.ui.view">
+            <field name="name">cost.estimate.template.form</field>
+            <field name="model">cost.estimation.template</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Cost Estimate Template">
+                    <sheet>
+                        <!--            <button class="oe_highlight oe_right" name="open_template" string="Edit Template" type="object"/>-->
+                        <div class="oe_title">
+                            <label class="oe_edit_only" for="name"/>
+                            <h1>
+                                <field name="name" placeholder="Estimation Template"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <label for="number_of_days"/>
+                                <div id="number_of_days">
+                                    <field class="oe_inline" name="number_of_days"/>days
+                                </div>
+                            </group>
+                            <!-- <group><label for="number_of_days"/><div id="Estimation duration"><field name="number_of_days" string="Estimation duration" class="oe_inline"/>days
+                                       </div></group>-->
+                        </group>
+                        <notebook>
+                            <page string="Lines">
+                                <field name="quote_line">
+                                    <form string="Costs Estimation Template Lines">
+                                        <group>
+                                            <group>
+                                                <field name="company_id" invisible="1"/>
+                                                <field name="product_id"/>
+                                                <!--                                                <field name="category_id"/>-->
+                                                <label for="product_uom_qty"/>
+                                                <div>
+                                                    <field class="oe_inline" name="product_uom_qty"/>
+                                                </div>
+                                                <field invisible="1" name="price_unit"/>
+                                                <!--                        <label for="discount" groups="sale.group_discount_per_so_line"/>-->
+                                                <!--                        <div groups="sale.group_discount_per_so_line">-->
+                                                <!--                          <field class="oe_inline" name="discount"/>%%</div>-->
+                                            </group>
+                                        </group>
+                                        <notebook colspan="4">
+                                            <page string="Description">
+                                                <field name="name"/>
+                                            </page>
+                                            <page string="Website Description">
+                                                <!--                                                                        <field name="website_description"/>-->
+                                            </page>
+                                        </notebook>
+                                    </form>
+                                    <list editable="bottom" string="Cost estimation Template Lines">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="product_id"/>
+                                        <!--                    <field groups="sale.group_sale_layout" name="layout_category_id"/>-->
+                                        <field name="name"/>
+                                        <field name="product_uom_qty"/>
+                                        <field name="product_uom_category_id" invisible="1"/>
+                                        <field groups="uom.group_uom" name="product_uom_id"/>
+                                        <!--                    <field groups="sale.group_discount_per_so_line" name="discount"/>-->
+                                        <field name="price_unit"/>
+                                        <!--                    <field invisible="1"  name="website_description"/>-->
+                                        <field name="my_price_subtotal" readonly="0"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <!-- <page string="Suggested Products"><field name="options"><tree string="Cost estimations Template Lines" editable="bottom"><field name="product_id"/><field name="layout_category_id" groups="sale.group_sale_layout"/><field name="name"/><field name="quantity"/><field name="uom_id" groups="uom.group_uom"/><field name="price_unit" invisible="1"/><field name="discount" groups="sale.group_discount_per_so_line"/><field name="website_description" invisible="1"/></tree></field></page><page string="Other Settings"><group><field name="require_payment" widget="radio"/><field name="mail_template_id"/></group></page>-->
+                        </notebook>
+                        <!--            <field invisible="1" name="website_description"/>-->
+                        <field name="note" nolabel="1"
+                               placeholder="An administrator can set up default Terms and conditions in your Company settings."/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_cost_estimate_template_tree" model="ir.ui.view">
+            <field name="name">cost.estimate.template.tree</field>
+            <field name="model">cost.estimation.template</field>
+            <field name="type">list</field>
+            <field name="arch" type="xml">
+                <list string="Cost Estimate Template">
+                    <field name="name"/>
+                </list>
+            </field>
+        </record>
+
+
+        <record id="action_cost_estimate_template" model="ir.actions.act_window">
+            <field name="name">Cost Estimation Templates</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cost.estimation.template</field>
+            <!--            <field name="view_type">form</field>-->
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Click here to create your template.
+                </p>
+                <p>Use templates to create polished, professional cost estimates in minutes.
+                    Send these cost estimates by email and let your customers sign online.
+                    Use cross-selling and discounts to push and boost your sales.
+                </p>
+            </field>
+        </record>
+
+
+        <record id="action_cost_estimation" model="ir.actions.act_window">
+            <field name="name">Cost Estimations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">opportunity.cost.estimation</field>
+            <!--            <field name="view_type">form</field>-->
+            <field name="view_mode">list,form</field>
+            <!-- <field name="help" type="html"><p class="oe_view_nocontent_create">Click here to create your template.
+                        </p><p>Use templates to create polished, professional cost estimates in minutes.
+                            Send these cost estimates by email and let your customers sign online.
+                            Use cross-selling and discounts to push and boost your sales.
+                        </p></field>-->
+        </record>
+        <!--  ======>menu_sales_config <=======   -->
+
+
+    </data>
+</odoo>

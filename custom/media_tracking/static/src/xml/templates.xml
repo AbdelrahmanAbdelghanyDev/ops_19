@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates id="template" xml:space="preserve">
+	<t t-extend="ListView.buttons">
+	 	<t t-jquery="button.o_list_export_xlsx" t-operation="after">
+		<button type="button" id="total_sample">
+					Total Sample
+		</button>
+		<button type="button" id="wizard_date"/>
+		<t id="lastId" t-set="last_id" t-value="self"/>
+		</t>
+	</t>
+</templates>

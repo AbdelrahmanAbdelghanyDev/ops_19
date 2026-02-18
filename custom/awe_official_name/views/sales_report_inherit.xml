@@ -1,0 +1,557 @@
+<odoo>
+    <template id="external_layout_header_inherit_cr"
+              inherit_id="web.external_layout_standard">
+        <xpath expr="//div[@class='row']" position="replace">
+            <div class="row">
+
+                <div class="col-xs-3 mb4">
+                    <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)"
+                         style="max-height: 120px;"/>
+                </div>
+                <div class="col-xs-9 text-right" style="margin-top:22px;" t-field="company.report_header"
+                     name="moto"/>
+            </div>
+        </xpath>
+        <xpath expr="//div[3]" position="replace">
+
+        </xpath>
+    </template>
+
+    <template id="sales_report_inherit_temp" inherit_id="account.report_invoice_document" priority="17">
+
+        <xpath expr="//address" position="replace">
+            <t t-if="o.company_id.name == 'OPS UAE' or o.company_id.name == 'OPS KSA' or o.company_id.name == '@ Ops For Market Research'">
+                <div class="row" style="font-size: 11px;">
+                    <div style="margin-left:-500px;" class="col-4">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <strong>To:</strong>
+                                <address t-field="o.partner_id"
+                                         t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'
+                                         style="white-space: nowrap;"/>
+                                <div t-if="o.partner_id.cr_numb">
+                                    <strong>CR Number:</strong>
+                                    <span t-field="o.partner_id.cr_numb"/>
+                                </div>
+                                <div t-if="o.partner_id.vat">
+                                    <strong>VAT Number:</strong>
+                                    <span t-field="o.partner_id.vat"/>
+                                </div>
+                                <div t-if="o.partner_id.email">
+                                    <strong>E-mail:</strong>
+                                    <span t-field="o.partner_id.email"/>
+                                </div>
+                                <div t-if="o.partner_id.phone">
+                                    <strong>Tele Number:</strong>
+                                    <span t-field="o.partner_id.phone"/>
+                                </div>
+                                <div t-if="o.partner_id.child_ids">
+                                    <strong>Att:</strong>
+                                    <div t-foreach="o.partner_id.child_ids" t-as="l">
+                                        <span t-field="l.name"/>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-8" style="margin-left:400px;">
+
+
+                        <b>
+                            <h6>@ Ops For Market Research</h6>
+                            <!--                            <address t-field="o.partner_id"-->
+                            <!--                                     t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}'/>-->
+                            <span t-field="o.company_id.street"/>
+                            <br/>
+                            <span t-field="o.company_id.state_id"/>
+                            <br/>
+                            <span t-field="o.company_id.country_id"/>
+
+                        </b>
+                        <div>CR Number: 163535
+                        </div>
+
+                        <div>
+                            TAX ID: 625-908-422
+                        </div>
+                    </div>
+                </div>
+            </t>
+
+            <t t-if="o.company_id.name == 'OPS Emaraties'">
+                <div class="row" style="font-size: 11px;">
+                    <div style="margin-left:-500px;" class="col-4">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <strong>To:</strong>
+                                <address t-field="o.partner_id"
+                                         t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'
+                                         style="white-space: nowrap;"/>
+                                <div t-if="o.partner_id.cr_numb">
+                                    <strong>CR Number:</strong>
+                                    <span t-field="o.partner_id.cr_numb"/>
+                                </div>
+                                <div t-if="o.partner_id.email">
+                                    <strong>E-mail:</strong>
+                                    <span t-field="o.partner_id.email"/>
+                                </div>
+                                <div t-if="o.partner_id.phone">
+                                    <strong>Tele Number:</strong>
+                                    <span t-field="o.partner_id.phone"/>
+                                </div>
+                                <div t-if="o.partner_id.child_ids">
+                                    <strong>Att:</strong>
+                                    <div t-foreach="o.partner_id.child_ids" t-as="l">
+                                        <span t-field="l.name"/>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-8" style="margin-left:400px;">
+
+
+                        <b>
+                            <!--                                <h6>OPS Emaraties</h6>-->
+                            <!--                            <address t-field="o.partner_id"-->
+                            <!--                                     t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}'/>-->
+                            <span t-field="o.company_id.street"/>
+                            <br/>
+                            <span t-field="o.company_id.street2"/>
+                            <br/>
+                            <span t-field="o.company_id.city"/>
+                            <br/>
+                            <span t-field="o.company_id.state_id"/>
+                            <br/>
+                            <span t-field="o.company_id.zip"/>
+                            <br/>
+                            <span t-field="o.company_id.country_id"/>
+
+                        </b>
+
+
+                    </div>
+                </div>
+            </t>
+
+
+            <t t-if="o.company_id.name == 'AWE Egypt'">
+                <div>
+                    <h4>Platform Group - Awe Research</h4>
+                    <div>
+                        Research office: Katameya Business Center, Office S3 A&amp;B
+                    </div>
+                    <div>
+                        Operations office: 97 Omar Ibn El Khattab St., Heliopolis,Cairo
+                    </div>
+                    <div>T. (+202) 24186551</div>
+                    <div>
+                        <a t-attf-href="http://www.aweresearch.com">www.aweresearch.com</a>
+                    </div>
+                    <div>CR Number: 65433
+                    </div>
+                    <div>VAT Number: 381-978-648
+                    </div>
+                    <div>TAX File Number: 001-5-03951-572-00-00
+                    </div>
+                </div>
+            </t>
+            <t t-if="o.company_id.name == 'AWE UAE'">
+                <div>
+                    <h4>Platform For Marketing Management LLC</h4>
+                    <div>Bay Square, Building 7, 4th Floor, Office 15, Business Bay, Dubai, UAE
+                    </div>
+                    <div>T. (+971)566697473</div>
+                    <div>
+                        <a t-attf-href="http://www.aweresearch.com">www.aweresearch.com</a>
+                    </div>
+                    <div>CR Number: 1159480
+                    </div>
+                    <div>TRN Number: 100379178500003
+                    </div>
+                </div>
+            </t>
+            <t t-if="o.company_id.name == 'AWE KSA'">
+                <div>
+                    <h4>Awesome Research</h4>
+                    <div>Al Ghafari Plaza, office no.6, Jeddah23436, KSA</div>
+                    <div>PO Box: 9501
+                    </div>
+                    <div>T. (+966)126395225</div>
+                    <div>
+                        <a t-attf-href="http://www.aweresearch.com">www.aweresearch.com</a>
+                    </div>
+                    <div>CR Number: 4030441111
+                    </div>
+                    <div>VAT Number: 310369249300003
+                    </div>
+                    <div>File Number: 1953864-9
+                    </div>
+                </div>
+            </t>
+            <div class="pull-right"
+                 style="text-align:left;white-space: nowrap;margin-top:2%;">
+                <div t-if="o.invoice_date" class="row" style="font-size:12px;">
+                    <strong>Invoice Date:</strong>
+                    <span t-field="o.invoice_date"/>
+                </div>
+                <div t-if="o.name" class="row" style="font-size:12px;">
+                    <strong>Invoice No.:</strong>
+                    <span t-field="o.name"/>
+                </div>
+
+                <div t-if="o.invoice_origin" class="row" style="font-size:12px;">
+                    <strong>Project No.:</strong>
+                    <span t-field="o.invoice_origin"/>
+                </div>
+                <div t-if="o.po_num" class="row" style="font-size:12px;">
+                    <strong>PO No.:</strong>
+                    <span t-field="o.po_num"/>
+                </div>
+                <!--                            <div t-if="o.gr_num" class="row">-->
+                <!--                                <strong>GR No.:</strong>-->
+                <!--                                <span t-field="o.gr_num"/>-->
+                <!--                            </div>-->
+                <!--                            <div t-if="o.vendor_num" class="row">-->
+                <!--                                <strong>Vendor No.:</strong>-->
+                <!--                                <span t-field="o.vendor_num"/>-->
+                <!--                            </div>-->
+
+            </div>
+
+        </xpath>
+<!--        <xpath expr="//div[@class='mt16']" position="replace">-->
+<!--        </xpath>-->
+        <xpath expr="//div[hasclass('page')]" position="replace">
+            <div class="page">
+                <!--                    <div class="row" style="margin-top:-10px;">-->
+                <!--                        <div class="col-xs-4">-->
+                <!--                            <strong>To:</strong>-->
+                <!--                            <address t-field="o.partner_id"-->
+                <!--                                     t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'-->
+                <!--                                     style="white-space: nowrap;"/>-->
+                <!--                            <div t-if="o.partner_id.cr_numb">-->
+                <!--                                <strong>CR Number:</strong>-->
+                <!--                                <span t-field="o.partner_id.cr_numb"/>-->
+                <!--                            </div>-->
+                <!--                            <div t-if="o.partner_id.vat">-->
+                <!--                                <strong>VAT Number:</strong>-->
+                <!--                                <span t-field="o.partner_id.vat"/>-->
+                <!--                            </div>-->
+                <!--                            <div t-if="o.partner_id.email">-->
+                <!--                                <strong>E-mail:</strong>-->
+                <!--                                <span t-field="o.partner_id.email"/>-->
+                <!--                            </div>-->
+                <!--                            <div t-if="o.partner_id.phone">-->
+                <!--                                <strong>Tele Number:</strong>-->
+                <!--                                <span t-field="o.partner_id.phone"/>-->
+                <!--                            </div>-->
+                <!--                            <div t-if="o.partner_id.child_ids">-->
+                <!--                                <strong>Att:</strong>-->
+                <!--                                <div t-foreach="o.partner_id.child_ids" t-as="l">-->
+                <!--                                    <span t-field="l.name"/>-->
+                <!--                                </div>-->
+                <!--                            </div>-->
+
+                <!--                        </div>-->
+
+                <!--                    </div>-->
+
+                <h4 t-if="o.move_type != 'out_refund'" style="padding-left:40%;">
+                    Taxable Invoice
+                </h4>
+                <h4 t-if="o.move_type == 'out_refund'" style="padding-left:40%;">
+                    Credit Note
+                </h4>
+
+                <div class="row mt32 mb32">
+                    <div class="col-xs-2" t-if="o.name">
+                        <strong>Description:</strong>
+                        <p t-field="o.name"/>
+                    </div>
+                    <div class="col-xs-2" t-if="o.partner_id.ref">
+                        <strong>Customer Code:</strong>
+                        <p t-field="o.partner_id.ref"/>
+                    </div>
+                    <div name="reference" class="col-xs-2" t-if="o.ref">
+                        <strong>Reference:</strong>
+                        <p t-field="o.ref"/>
+                    </div>
+                </div>
+
+                <!-- Is there a discount on at least one line? -->
+                <t t-set="display_discount" t-value="any([l.discount for l in o.invoice_line_ids])"/>
+
+                <table class="table" name="invoice_line_table" style="font-size:12px;">
+                    <thead>
+                        <tr>
+                            <th style="width:60%">Description</th>
+                            <th class="text-right">Quantity</th>
+                            <th class="text-right">Unit Price</th>
+                            <th t-if="display_discount" class="text-right">Disc.(%)</th>
+                            <th class="text-right">Taxes</th>
+                            <th class="text-right" t-if="o.company_id.name == 'OPS Emaraties'">Tax Amount</th>
+                            <th class="text-right">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody class="invoice_tbody">
+                        <tr t-foreach="o.invoice_line_ids" t-as="l">
+                            <td>
+                                <span t-field="l.name"/>
+                            </td>
+
+                            <td class="text-right">
+                                <span t-field="l.quantity"/>
+                                <span t-field="l.product_uom_id" groups="uom.group_uom"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="l.price_unit"/>
+                            </td>
+                            <td t-if="display_discount" class="text-right">
+                                <span t-field="l.discount"/>
+                            </td>
+                            <td>
+                                <span t-foreach="l.tax_ids" t-as="x" class="text-right">
+                                    <span t-field="x.name"/>
+                                    <br/>
+                                </span>
+                            </td>
+                            <td t-if="o.company_id.name == 'OPS Emaraties'" class="text-right">
+                                <span t-field="l.tax_amount"/>
+                            </td>
+
+                            <td class="text-right" id="subtotal">
+                                <span t-field="l.price_subtotal"
+                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <div class="row" style="height:30px;">
+                    <div class="col-6"></div>
+                    <div class="col-6">
+                        <table class="table table-condensed"
+                               style="margin-top:10px;font-size:12px;">
+                            <tr class="border-black" style="border-bottom:1px solid #dddddd;">
+                                <td style="white-space: nowrap;">
+                                    <strong>Total Excluding Tax</strong>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_untaxed"
+                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                            <t t-foreach="o.amount_by_group" t-as="amount_by_group">
+                                <tr style="border-bottom:1px solid #dddddd;"
+                                    t-if="'VAT' in amount_by_group[0] and o.company_id.name == 'AWE Egypt'">
+                                    <!--    tax_line_ids not available in odoo 14 <t t-if="len(o.tax_line_ids) == 1 and o.amount_untaxed == amount_by_group[2]">-->
+                                    <t t-if="o.amount_untaxed == amount_by_group[2]">
+                                        <td style="white-space: nowrap;">
+                                            <span t-esc="amount_by_group[0]"/>
+                                            <span t-if="'%' not in amount_by_group[0]">%</span>
+                                        </td>
+                                        <td class="text-right" style="white-space: nowrap;">
+                                            <span t-esc="amount_by_group[3]"/>
+                                        </td>
+                                    </t>
+                                    <t t-else="">
+                                        <td style="white-space: nowrap;">
+                                            <span t-esc="amount_by_group[0]"/>
+                                            <span t-if="'%' not in amount_by_group[0]">%</span>
+                                        </td>
+                                        <td class="text-right" style="white-space: nowrap;">
+                                            <span t-esc="amount_by_group[3]"/>
+                                        </td>
+                                    </t>
+                                </tr>
+
+
+                            </t>
+
+                            <!--VAT For OPS-->
+
+
+                            <t t-foreach="o.amount_by_group" t-as="amount_by_group">
+
+                                <tr style="border-bottom:1px solid #dddddd;">
+                                    <!--                                        t-if="('VAT' not in amount_by_group[0]) or o.company_id.name != '@ Ops For Market Research'"-->
+
+                                    <td style="white-space: nowrap;">
+                                        <span t-esc="amount_by_group[0]"/>
+                                        <span t-if="'%' not in amount_by_group[0]">%</span>
+                                    </td>
+                                    <td class="text-right" style="background-color:gray;white-space: nowrap;">
+                                        <span t-esc="amount_by_group[3]"/>
+                                    </td>
+                                    <!--                                        </t>-->
+                                    <!--                                        <t t-else="">-->
+
+                                    <!--                                        </t>-->
+
+                                </tr>
+                            </t>
+
+
+                            <tr class="border-black">
+                                <td style="white-space: nowrap;">
+                                    <strong>
+                                        Total Including Tax
+                                    </strong>
+                                </td>
+                                <td class="text-right" style="background-color:gray;">
+                                    <span t-field="o.amount_total"
+                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                            <tr class="border-black" style="background-color:black;color:white">
+                                <td>
+                                    <strong>
+                                        <u>Total Due</u>
+                                    </strong>
+                                </td>
+                                <td>
+                                    Only
+                                    <span t-esc="o.currency_id.amount_to_text(o.amount_total) if o.currency_id else ''"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="row pull-right" style="margin-right:5px; margin-top:-14px;font-size:12px;">
+                            <strong>
+                                <u>AUTHORIZED SIGNATURE</u>
+                                <br/>
+                                <br/>
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="pull-left" style="border:1px solid black;padding:5px;width:45%;font-size:12px;">
+                    <strong>
+                        <u>Payment Term</u>
+                    </strong>
+                    <p t-if="o.company_id.name == 'OPS UAE' or o.company_id.name == 'OPS KSA' or o.company_id.name == '@ Ops For Market Research' or o.company_id.name == 'OPS Emaraties'">
+                        Payment is due within 30 days of invoice date
+                        please use our invoice number reference upon payment
+                    </p>
+                    <p t-if="o.company_id.name == 'AWE Egypt'">
+                        Payment is due within 30 days of invoice date
+                        <br/>
+                        Please use our invoice number reference upon payment
+                    </p>
+                    <p t-if="o.company_id.name == 'AWE UAE' or o.company_id.name == 'AWE KSA'">
+                        Payment as per contract agreement or PO
+                    </p>
+
+
+                </div>
+
+                <div class="pull-left"
+                     style="border:1px solid black;padding:5px;width:45%;clear: both;margin-top:5px;font-size:12px;">
+                    <p t-if="o.company_id.name == 'AWE Egypt'">
+                        <span>Payment may be made by draft, payable to Platform Group S.A.E</span>
+                        <br/>
+                        <span>OR by direct transfer to our bank,</span>
+                        <br/>
+                        <span>Account Name : Platform Group</span>
+                        <br/>
+                        <span>Account No EGP: 00077-20313531554-90</span>
+                        <br/>
+                        <span>IBAN No EGP : EG250037007708182031353155490</span>
+                        <br/>
+                        <span>Account No USD: 00077-20313611719-58</span>
+                        <br/>
+                        <span>IBAN No USD : EG390037007708402031361171958</span>
+                        <br/>
+                        <span>QNB ALAHLI, SWIFT CODE: QNBAEGCXXX, Safir Branch, Cairo, Egypt</span>
+                    </p>
+                    <p t-if="o.company_id.name == 'AWE UAE'">
+                        <span>Please use our invoice number reference upon payment.</span>
+                        <span>Please arrange to pay this amount :</span>
+                        <br/>
+                        <span>Account number AED : 1015276176801</span>
+                        <br/>
+                        <span>Account number USD : 1025276176802</span>
+                        <br/>
+                        <span>Account name: PLATFORM FOR MARKETING MANAGEMENT LLC</span>
+                        <br/>
+                        <span>Bank: Emirates NBD Bank</span>
+                        <br/>
+                        <span>Branch name : 1213 Jumeirah branch</span>
+                        <br/>
+                        <span>Swift: EBILAEAD</span>
+                        <br/>
+                        <span>IBAN AED: AE150260001015276176801</span>
+                        <br/>
+                        <span>IBAN USD: AE230260001025276176802</span>
+                        <br/>
+                    </p>
+                    <p t-if="o.company_id.name == 'AWE KSA'">
+                        Payment may be made by draft, payable to Awesome Research Company OR by direct transfer to
+                        our bank,
+                        <br/>
+                        <span>Account No: 895-046746-001</span>
+                        <br/>
+                        <span>IBAN(SA6145000000895046746001)</span>
+                        <br/>
+                        <span>SHB, SWIFT CODE:(SABBSARI), PO. BOX 67, Jeddah, KSA 21411</span>
+                    </p>
+                    <p t-if="o.company_id.name == 'OPS UAE' or o.company_id.name == 'OPS KSA' or o.company_id.name == '@ Ops For Market Research'"
+                       style="font-size:12px;">
+                        <!--                            <p>-->
+                        <!--                                Payment may be made by draft, payable to @ OPS FOR MARKET RESERCH CO OR by direct-->
+                        <!--                                transfer-->
+                        <!--                                to our bank-->
+                        <!--                            </p>-->
+                        <!--<p>Account Name: @ OPS FOR MARKET</p>-->
+                        <br/>
+                        Account Name: @ OPS FOR MARKET RESERCH CO
+                        <br/>
+                        Account No EGP: 0000720311341624
+                        <br/>
+                        IBAN No EGP : EG290037000708182031134162439
+                        <br/>
+                        QNB ALAHLI, SWIFT CODE: QNBAEGCXXXX , Champollion Branch, Cairo,Egypt
+                    </p>
+
+                    <p t-if="o.company_id.name == 'OPS Emaraties'"
+                       style="font-size:12px;">
+                        <!--                            <p>-->
+                        <!--                                Payment may be made by draft, payable to @ OPS FOR MARKET RESERCH CO OR by direct-->
+                        <!--                                transfer-->
+                        <!--                                to our bank-->
+                        <!--                            </p>-->
+                        <!--<p>Account Name: @ OPS FOR MARKET</p>-->
+                        <br/>
+                        ACCOUNT NAME: AT OPS FOR MARKET RESEARCH FZE
+                        <br/>
+                        ACCOUNT NO. AED: 14428617920001
+                        <br/>
+                        IBAN NO. AED: AE660030014428617920001
+                        <br/>
+                        ACCOUNT NO. USD: 14428617930001
+                        <br/>
+                        IBAN NO. USD: AE170030014428617930001
+                        <br/>
+                        ADCB SWIFT CODE: ADCBAEAA
+                    </p>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//tbody[hasclass('invoice_tbody')]/tr/td[4]/span" position="replace">
+            <t t-set="tmp" t-value="str(l.price_unit)"/>
+            <span t-if="tmp[::-1].find('.') == 1" t-esc="tmp + '0'"/>
+            <span t-if="tmp[::-1].find('.') == 2" t-esc="tmp"/>
+            <span t-if="tmp[::-1].find('.') > 2" t-esc="tmp[:tmp.find('.') + 3]"/>
+        </xpath>
+    </template>
+
+
+</odoo>

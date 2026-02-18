@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="n4_1" model="a.n4">
+            <field name="name">9:00-11 AM</field>
+        </record>
+        <record id="n4_2" model="a.n4">
+            <field name="name">11:05-1 PM</field>
+        </record>
+        <record id="n4_3" model="a.n4">
+            <field name="name">1:05-3 PM</field>
+        </record>
+        <record id="n4_4" model="a.n4">
+            <field name="name">3:05-5 PM</field>
+        </record>
+        <record id="n4_5" model="a.n4">
+            <field name="name">5:05-7 PM</field>
+        </record>
+        <record id="n4_6" model="a.n4">
+            <field name="name">7:05-9 PM</field>
+        </record>
+        <record id="n4_7" model="a.n4">
+            <field name="name">9:05-11 PM</field>
+        </record>
+        <record id="n4_8" model="a.n4">
+            <field name="name">11:05-1 AM</field>
+        </record>
+        <record id="n4_9" model="a.n4">
+            <field name="name">1:05-3 AM</field>
+        </record>
+        <record id="n4_10" model="a.n4">
+            <field name="name">3:05-5 AM</field>
+        </record>
+        <record id="n4_11" model="a.n4">
+            <field name="name">5:05-7 AM</field>
+        </record>
+        <record id="n4_12" model="a.n4">
+            <field name="name">7:05-9 AM</field>
+        </record>
+
+    </data>
+</odoo>

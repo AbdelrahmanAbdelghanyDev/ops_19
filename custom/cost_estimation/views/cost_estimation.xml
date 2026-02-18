@@ -1,0 +1,333 @@
+<odoo>
+    <data>
+        <record id="crm_methodology_view_new_est_button_inherit" model="ir.ui.view">
+             <field name="name">crm methodology view</field>
+             <field name="model">crm.lead</field>
+             <field name="inherit_id" ref="custom_opportunity_cost_estimation_v11.opportunity_cost_estimation"/>
+             <field name="arch" type="xml">
+                  <xpath expr="//button[@name='new_cost_estimation']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+             </field>
+        </record>
+
+
+        <record id="crm_methodology_view_page_prod_inherit" model="ir.ui.view">
+             <field name="name">crm methodology view</field>
+             <field name="model">crm.lead</field>
+             <field name="inherit_id" ref="sale_crm.crm_case_form_view_oppor"/>
+             <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//button[@name='sale_action_quotations_new']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                    <xpath expr="//page[@name='products']" position="attributes">
+                        <attribute name="invisible">[('old','=',False)]</attribute>
+                    </xpath>
+                </data>
+             </field>
+        </record>
+        <record id="cost_estimation_form" model="ir.ui.view">
+            <field name="name">cost.estimation.form</field>
+            <field name="model">cost.estimation</field>
+            <field name="arch" type="xml">
+                <form string="Cost Estimation" >
+                    <header>
+                        <button name="button_compute" string="Compute" type="object" class="oe_highlight"
+                                states="draft,first_approval,second_approval"
+                                groups="cost_estimation_interface.group_cost_est_user,cost_estimation_interface.group_cost_est_1st_app,cost_estimation_interface.group_cost_est_2nd_app"/>
+                        <button name="submit" string="Submit" type="object" class="oe_highlight" states="draft"
+                                groups="cost_estimation_interface.group_cost_est_user,cost_estimation_interface.group_cost_est_1st_app,cost_estimation_interface.group_cost_est_2nd_app"/>
+                        <button name="approve_1" string="Approve" type="object" class="oe_highlight"
+                                states="first_approval"
+                                groups="cost_estimation_interface.group_cost_est_1st_app,cost_estimation_interface.group_cost_est_2nd_app"/>
+                        <button name="reject_1" string="Reject" type="object" class="oe_highlight"
+                                states="first_approval"
+                                groups="cost_estimation_interface.group_cost_est_1st_app,cost_estimation_interface.group_cost_est_2nd_app"/>
+                        <button name="approve_2" string="Approve" type="object" class="oe_highlight"
+                                states="second_approval" groups="cost_estimation_interface.group_cost_est_2nd_app"/>
+                        <button name="reject_2" string="Reject" type="object" class="oe_highlight"
+                                states="second_approval" groups="cost_estimation_interface.group_cost_est_2nd_app"/>
+
+                        <button name="create_quotation" string="Create Quotation" type="object" class="oe_highlight"
+                                states="approved"
+                                groups="cost_estimation_interface.group_cost_est_user,cost_estimation_interface.group_cost_est_1st_app,cost_estimation_interface.group_cost_est_2nd_app"/>
+                        <button name="cancel" style="background-color:red" string="Cancel" type="object"
+                                class="oe_highlight" states="approved"
+                                groups="cost_estimation_interface.group_cost_est_1st_app,cost_estimation_interface.group_cost_est_2nd_app"/>
+
+                        <!--                        <button name="set_draft" string="Set To Draft" type="object" class="oe_highlight" />-->
+                        <button name="set_draft" string="Set To Draft" type="object" class="oe_highlight"
+                                states="rejected"
+                                groups="cost_estimation_interface.group_cost_est_user,cost_estimation_interface.group_cost_est_1st_app,cost_estimation_interface.group_cost_est_2nd_app"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,first_approval,second_approval,approved"/>
+                    </header>
+                    <div class="oe_button_box" name="button_box" invisible="[('quotations_count', '=', 0)]">
+                        <button type="object"
+                                name="action_view_quotation"
+                                class="oe_stat_button"
+                                icon="fa-shopping-cart">
+                            <field name="quotations_count" widget="statinfo" string="Quotations"/>
+
+                        </button>
+
+                    </div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="seq"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="hide_create_quotation" invisible="1"/>
+                            <field name="customer"/>
+                            <field name="opportunity"/>
+                            <field name="sales_team"/>
+                            <field name="sales_person"/>
+                            <field name="price_list" readonly="[('state', '!=', 'draft')]"/>
+                            <field name="fx" readonly="[('state', '!=', 'draft')]"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="estimate_date"/>
+                            <field name="company_id"/>
+                            <field name="sale_order" invisible="[('sale_order', '=', False)]"/>
+                            <field name="t_margin" force_save="1"/>
+                            <field name="t_margin_percentage" force_save="1"/>
+                            <field name="research_type_name" invisible="1"/>
+                            <field name="research_type"
+                                   options="{'no_quick_create': True, 'no_create_edit' : True,'no_open': True}"/>
+                            <field name="waves" />
+                            <field name="cost_of_waves" />
+                            <field name="cpi_x" force_save="1"/>
+                            <field name="third_party_cost" force_save="1"/>
+                            <field name="travel_expenses" force_save="1"/>
+
+
+                        </group>
+                    </group>
+                    <group>
+                        <notebook>
+                            <page string="Estimation Line">
+                                <field name="cost_estimation_line" readonly="[('state', 'in', ['approved','cancelled'])]">
+                                    <list editable="bottom">
+
+                                        <field name="salable_product"
+                                               options="{'no_quick_create': True, 'no_create_edit' : True,'no_open': True}"/>
+                                        <field name="sp_desc"/>
+                                        <field name="sp_quant"/>
+                                        <field name="cost_item" domain="[('cost_ok', '=', True)]"
+                                               options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                                        <field name="product_rate"/>
+                                        <field name="cost_item_uom_id" optional="hide"/>
+                                        <field name="cost_item_description"/>
+                                        <field name="cost_item_type"/>
+                                        <field name="cost_item_quant_sp"/>
+                                        <field name="cost_item_cost_currency" optional="hide"/>
+                                        <field name="fx" invisible="1"/>
+                                        <field name="taxes" widget="many2many_tags"
+                                               options="{'no_quick_create': True, 'no_create_edit' : True}"
+                                               optional="hide"/>
+                                        <field name="cost_item_unit_cost"/>
+                                        <field name="cost_item_cost_sp"/>
+
+                                        <field name="total_cost_item_quantity" optional="hide"/>
+                                        <field name="total_cost_item_cost"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Methodology">
+                                <field name="products_line" >
+                                    <list editable="bottom" create="false">
+                                        <field name="salable_product"
+                                               options="{'no_quick_create': True, 'no_create_edit' : True,'no_open': True}"/>
+                                        <field name="sp_desc"/>
+                                        <field name="cost_item_description"/>
+                                        <field name="fw_city" readonly="[('parent.state', '!=', 'draft')]"
+                                               options="{'no_quick_create': True, 'no_create_edit' : True,'no_open': True}"/>
+                                        <field name="sec" readonly="[('parent.state', '!=', 'draft')]" column_invisible="[('parent.research_type_name', '!=', 'QL')]"/>
+                                        <field name="gender" readonly="[('parent.state', '!=', 'draft')]" column_invisible="[('parent.research_type_name', '!=', 'QL')]"/>
+                                        <field name="age" readonly="[('parent.state', '!=', 'draft')]" column_invisible="[('parent.research_type_name', '!=', 'QL')]"/>
+                                        <field name="sp_quant" force_save="1" readonly="[('parent.state', '!=', 'draft')]" column_invisible="[('parent.research_type_name', '!=', 'QN')]"/>
+                                        <field name="sp_quant_ql" force_save="1" readonly="[('parent.state', '!=', 'draft')]" column_invisible="[('parent.research_type_name', '!=', 'QL')]"/>
+                                        <field name="unit_of_measure"/>
+                                        <field name="unit_cost"/>
+                                        <field name="taxes" widget="many2many_tags" readonly="[('parent.state', '!=', 'draft')]"
+                                               options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                                        <field name="total_cost"/>
+                                        <field name="margin" readonly="[('parent.state', '!=', 'second_approval')]"/>
+                                        <field name="unit_price"/>
+                                        <field name="subtotal"/>
+                                        <field name="subtotal_taxed" force_save="1" invisible="1"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page name="brief" string="Brief">
+                                <group invisible="[('research_type_name', '!=', 'QN')]" required="[('research_type_name', '=','QN')]">
+                                    <group>
+                                        <!--                                        <field name="research_type" readonly="True"/>-->
+                                        <!--                                        <field name="approach" readonly="True"/>-->
+                                        <!--                                        <field name="methodology" readonly="True"/>-->
+                                        <!--                                        <field name="number_of_legs" readonly="True"/>-->
+                                        <field name="objective" string="Objective"
+                                               invisible="[('research_type_name', '!=', 'QN')]"/>
+                                        <field name="methodology" string="Methodology"
+                                               invisible="[('research_type_name', '!=', 'QN')]"/>
+                                        <field name="criteria_usage" string="Criteria / Usage"
+                                               invisible="[('research_type_name', '!=', 'QN')]"/>
+                                        <field name="sample_size_text" string="Sample Size"
+                                               invisible="[('research_type_name', '!=', 'QN')]"/>
+
+                                    </group>
+                                    <group>
+                                        <!--                                        <field name="sample_size" readonly="True"/>-->
+                                        <!--                                        <field name="gender" readonly="True"/>-->
+                                        <!--                                        <field name="sec" readonly="True" string="SEC"/>-->
+                                        <!--                                        <field name="age" readonly="True"/>-->
+                                        <field name="sample_struct_per_reg"
+                                               invisible="[('research_type_name', '!=', 'QN')]"/>
+                                        <field name="sample_struct_per_sec"
+                                               invisible="[('research_type_name', '!=', 'QN')]"/>
+                                        <field name="sample_struct_per_age"
+                                               invisible="[('research_type_name', '!=', 'QN')]"/>
+                                        <field name="sample_struct_per_gen"
+                                               invisible="[('research_type_name', '!=', 'QN')]"/>
+                                        <field name="sample_struct_per_bra"
+                                               invisible="[('research_type_name', '!=', 'QN')]"/>
+                                    </group>
+                                </group>
+                                <group invisible="[('research_type_name', '!=', 'QN')]" required="[('research_type_name', '=','QN')]">
+                                    <group>
+                                        <!--                                        <field name="region" readonly="True"/>-->
+                                        <!--                                        <field name="usership" readonly="True"/>-->
+                                        <!--                                        <field name="moub" readonly="True" string="MOUB"/>-->
+                                        <field name="length_of_interview"
+                                               invisible="[('research_type_name', '!=', 'QN')]"/>
+                                        <field name="details"
+                                               invisible="[('research_type_name', '!=', 'QN')]"/>
+                                    </group>
+                                </group>
+                                <group invisible="[('research_type_name', '!=', 'QL')]" >
+                                    <group>
+                                        <field readonly="True" name="translation"
+                                               invisible="[('research_type_name', '!=', 'QL')]"/>
+                                        <field name="other_translation"
+                                               invisible="[('research_type_name', '!=', 'QL')]"/>
+
+                                    </group>
+                                    <group>
+                                        <field name="no_of_client_attendees"
+                                               invisible="[('research_type_name', '!=', 'QL')]"/>
+                                        <field name="no_of_units_attendees"
+                                               invisible="[('research_type_name', '!=', 'QL')]"/>
+                                        <field name="client_attendence_region_ids" widget="many2many_tags"
+                                               invisible="[('research_type_name', '!=', 'QL')]"/>
+                                        <field name="viewing_facility"
+                                               string="Viewing Facility outside Capital City"
+                                               invisible="[('research_type_name', '!=', 'QL')]"/>
+                                    </group>
+                                    <group>
+                                        <field name="transcript"
+                                               invisible="[('research_type_name', '!=', 'QL')]"/>
+                                        <field name="ex_transcript" string="Extended Transcripts"
+                                               invisible="[('research_type_name', '!=', 'QL')]"/>
+                                        <field name="transcript_lang" string="Transcripts Language"
+                                               invisible="[('research_type_name', '!=', 'QL')]"/>
+                                        <field name="printing_material" string="Printing Material"
+                                               invisible="[('research_type_name', '!=', 'QL')]"/>
+                                        <field name="details_ql"
+                                               invisible="[('research_type_name', '!=', 'QL')]"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Notes">
+                                <group>
+                                    <field name="notes"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </group>
+                    <group name="note_group" col="6">
+                        <group class="oe_subtotal_footer oe_right" colspan="2" name="total_cost_item">
+                            <field name="total_material_cost" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <field name="total_labour_cost" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <field name="total_overhead_cost" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <field name="total_product_line_tax" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                <label for="total_cost"/>
+                            </div>
+                            <field name="total_cost" nolabel="1" class="oe_subtotal_footer_separator"
+                                   widget="monetary"/>
+                            <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                <label for="total_unit_price"/>
+                            </div>
+                            <field name="total_unit_price" nolabel="1" class="oe_subtotal_footer_separator"
+                                   widget="monetary"/>
+                        </group>
+                        <div class="oe_clear"/>
+                    </group>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                    </div>
+                </form>
+
+            </field>
+        </record>
+
+        <record id="cost_estimation_tree" model="ir.ui.view">
+            <field name="name">cost.estimation.tree</field>
+            <field name="model">cost.estimation</field>
+            <field name="arch" type="xml">
+                <list string="Cost Estimation" decoration-danger="state =='cancelled'"
+                      decoration-success="state=='approved'" create="false">
+                    <field name="seq"/>
+                    <field name="customer"/>
+                    <field name="opportunity"/>
+                    <field name="price_list"/>
+                    <field name="fx" invisible="1"/>
+                    <field name="estimate_date"/>
+                    <field name="t_margin"/>
+                    <field name="t_margin_percentage"/>
+                    <field name="state"/>
+                    <field name="total_cost"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="action_cost_estimation" model="ir.actions.act_window">
+            <field name="name">Cost Estimation</field>
+            <field name="res_model">cost.estimation</field>
+            <field name="view_mode">list,form</field>
+        </record>
+        <record id="cost_estimation_form_action" model="ir.actions.act_window">
+            <field name="name">New Estimation</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cost.estimation</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="cost_estimation_form"/>
+        </record>
+        <menuitem id="cost_estimation_menu"
+                  parent="crm.crm_menu_root"
+                  action="action_cost_estimation"
+                  sequence="24"/>
+
+        <record id="seq_cost_estimation" model="ir.sequence">
+            <field name="name">seq</field>
+            <field name="code">cost.estimation</field>
+            <field name="prefix">COE/</field>
+            <field name="padding">4</field>
+            <field name="company_id"></field>
+            <field name="implementation">no_gap</field>
+        </record>
+
+
+    </data>
+</odoo>

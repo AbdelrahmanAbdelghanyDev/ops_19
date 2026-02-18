@@ -1,0 +1,257 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+        <record model="ir.ui.view" id="quarter_list">
+            <field name="name">TV rating by the program (15 mins) list</field>
+            <field name="model">a.quarter</field>
+            <field name="arch" type="xml">
+                <list create="0" duplicate="0" delete="0">
+                    <field name="period"/>
+                    <field name="duration"/>
+                    <field name="media_channel_id"/>
+                    <field name="programs_id"/>
+                    <field name="base" optional="show"/>
+                    <field name="week_day" optional="show"/>
+                    <field name="week_end" optional="show"/>
+                    <!--                    Gender-->
+                    <field name="base_male" optional="hidden"/>
+                    <field name="week_day_male" optional="hidden"/>
+                    <field name="week_end_male" optional="hidden"/>
+                    <field name="base_female" optional="hidden"/>
+                    <field name="week_day_female" optional="hidden"/>
+                    <field name="week_end_female" optional="hidden"/>
+                    <!--                    Region-->
+                    <field name="base_cairo" optional="hidden"/>
+                    <field name="week_end_cairo" optional="hidden"/>
+                    <field name="week_day_cairo" optional="hidden"/>
+
+                    <field name="base_alex" optional="hidden"/>
+                    <field name="week_end_alex" optional="hidden"/>
+                    <field name="week_day_alex" optional="hidden"/>
+
+                    <field name="base_delta" optional="hidden"/>
+                    <field name="week_end_delta" optional="hidden"/>
+                    <field name="week_day_delta" optional="hidden"/>
+
+                    <field name="base_ue" optional="hidden"/>
+                    <field name="week_end_ue" optional="hidden"/>
+                    <field name="week_day_ue" optional="hidden"/>
+
+                    <field name="base_c_r" optional="hidden"/>
+                    <field name="week_end_c_r" optional="hidden"/>
+                    <field name="week_day_c_r" optional="hidden"/>
+                    <!--                    SEC-->
+                    <field name="base_A" optional="hidden"/>
+                    <field name="week_end_A" optional="hidden"/>
+                    <field name="week_day_A" optional="hidden"/>
+
+                    <field name="base_B" optional="hidden"/>
+                    <field name="week_end_B" optional="hidden"/>
+                    <field name="week_day_B" optional="hidden"/>
+
+                    <field name="base_C1" optional="hidden"/>
+                    <field name="week_end_C1" optional="hidden"/>
+                    <field name="week_day_C1" optional="hidden"/>
+
+                    <field name="base_C2" optional="hidden"/>
+                    <field name="week_end_C2" optional="hidden"/>
+                    <field name="week_day_C2" optional="hidden"/>
+
+                    <field name="base_DE" optional="hidden"/>
+                    <field name="week_end_DE" optional="hidden"/>
+                    <field name="week_day_DE" optional="hidden"/>
+<!--Age-->
+                    <field name="base_2" optional="hidden"/>
+                    <field name="week_end_2" optional="hidden"/>
+                    <field name="week_day_2" optional="hidden"/>
+
+                    <field name="base_3" optional="hidden"/>
+                    <field name="week_end_3" optional="hidden"/>
+                    <field name="week_day_3" optional="hidden"/>
+
+                    <field name="base_4" optional="hidden"/>
+                    <field name="week_end_4" optional="hidden"/>
+                    <field name="week_day_4" optional="hidden"/>
+
+                    <field name="base_5" optional="hidden"/>
+                    <field name="week_end_5" optional="hidden"/>
+                    <field name="week_day_5" optional="hidden"/>
+
+                    <field name="base_6" optional="hidden"/>
+                    <field name="week_end_6" optional="hidden"/>
+                    <field name="week_day_6" optional="hidden"/>
+
+                    <field name="base_7" optional="hidden"/>
+                    <field name="week_end_7" optional="hidden"/>
+                    <field name="week_day_7" optional="hidden"/>
+
+                    <field name="base_8" optional="hidden"/>
+                    <field name="week_end_8" optional="hidden"/>
+                    <field name="week_day_8" optional="hidden"/>
+
+                    <field name="base_9" optional="hidden"/>
+                    <field name="week_end_9" optional="hidden"/>
+                    <field name="week_day_9" optional="hidden"/>
+
+                    <field name="base_10" optional="hidden"/>
+                    <field name="week_end_10" optional="hidden"/>
+                    <field name="week_day_10" optional="hidden"/>
+
+                </list>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="quarter_total_sample_list">
+            <field name="name">TV rating by the program (15 mins) list (total sample)</field>
+            <field name="model">a.quarter.total.sample</field>
+            <field name="arch" type="xml">
+                <list create="0" duplicate="0" delete="0">
+                    <field name="period"/>
+                    <field name="duration"/>
+                    <field name="media_channel_id"/>
+                    <field name="programs_id"/>
+                    <field name="base" optional="show"/>
+                    <field name="week_day" optional="show"/>
+                    <field name="week_end" optional="show"/>
+                    <!--                    Gender-->
+                    <field name="base_male" optional="hidden"/>
+                    <field name="week_day_male" optional="hidden"/>
+                    <field name="week_end_male" optional="hidden"/>
+                    <field name="base_female" optional="hidden"/>
+                    <field name="week_day_female" optional="hidden"/>
+                    <field name="week_end_female" optional="hidden"/>
+                    <!--                    Region-->
+                    <field name="base_cairo" optional="hidden"/>
+                    <field name="week_end_cairo" optional="hidden"/>
+                    <field name="week_day_cairo" optional="hidden"/>
+
+                    <field name="base_alex" optional="hidden"/>
+                    <field name="week_end_alex" optional="hidden"/>
+                    <field name="week_day_alex" optional="hidden"/>
+
+                    <field name="base_delta" optional="hidden"/>
+                    <field name="week_end_delta" optional="hidden"/>
+                    <field name="week_day_delta" optional="hidden"/>
+
+                    <field name="base_ue" optional="hidden"/>
+                    <field name="week_end_ue" optional="hidden"/>
+                    <field name="week_day_ue" optional="hidden"/>
+
+                    <field name="base_c_r" optional="hidden"/>
+                    <field name="week_end_c_r" optional="hidden"/>
+                    <field name="week_day_c_r" optional="hidden"/>
+                    <!--                    SEC-->
+                    <field name="base_A" optional="hidden"/>
+                    <field name="week_end_A" optional="hidden"/>
+                    <field name="week_day_A" optional="hidden"/>
+
+                    <field name="base_B" optional="hidden"/>
+                    <field name="week_end_B" optional="hidden"/>
+                    <field name="week_day_B" optional="hidden"/>
+
+                    <field name="base_C1" optional="hidden"/>
+                    <field name="week_end_C1" optional="hidden"/>
+                    <field name="week_day_C1" optional="hidden"/>
+
+                    <field name="base_C2" optional="hidden"/>
+                    <field name="week_end_C2" optional="hidden"/>
+                    <field name="week_day_C2" optional="hidden"/>
+
+                    <field name="base_DE" optional="hidden"/>
+                    <field name="week_end_DE" optional="hidden"/>
+                    <field name="week_day_DE" optional="hidden"/>
+<!--Age-->
+                    <field name="base_2" optional="hidden"/>
+                    <field name="week_end_2" optional="hidden"/>
+                    <field name="week_day_2" optional="hidden"/>
+
+                    <field name="base_3" optional="hidden"/>
+                    <field name="week_end_3" optional="hidden"/>
+                    <field name="week_day_3" optional="hidden"/>
+
+                    <field name="base_4" optional="hidden"/>
+                    <field name="week_end_4" optional="hidden"/>
+                    <field name="week_day_4" optional="hidden"/>
+
+                    <field name="base_5" optional="hidden"/>
+                    <field name="week_end_5" optional="hidden"/>
+                    <field name="week_day_5" optional="hidden"/>
+
+                    <field name="base_6" optional="hidden"/>
+                    <field name="week_end_6" optional="hidden"/>
+                    <field name="week_day_6" optional="hidden"/>
+
+                    <field name="base_7" optional="hidden"/>
+                    <field name="week_end_7" optional="hidden"/>
+                    <field name="week_day_7" optional="hidden"/>
+
+                    <field name="base_8" optional="hidden"/>
+                    <field name="week_end_8" optional="hidden"/>
+                    <field name="week_day_8" optional="hidden"/>
+
+                    <field name="base_9" optional="hidden"/>
+                    <field name="week_end_9" optional="hidden"/>
+                    <field name="week_day_9" optional="hidden"/>
+
+                    <field name="base_10" optional="hidden"/>
+                    <field name="week_end_10" optional="hidden"/>
+                    <field name="week_day_10" optional="hidden"/>
+
+                </list>
+            </field>
+        </record>
+
+
+        <record id="quarter_view_pivot" model="ir.ui.view">
+            <field name="name">TV rating by the program (15 mins) Pivot</field>
+            <field name="model">a.quarter</field>
+            <field name="arch" type="xml">
+                <pivot string="TV rating by the program (15 mins)">
+                    <field name="channel_id" type="row"/>
+                    <field name="programs_id" type="row"/>
+                    <field name="base" type="measure"/>
+                    <field name="week_end" type="measure"/>
+                    <field name="week_day" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="quarter_view_pivot_total_sample" model="ir.ui.view">
+            <field name="name">TV rating by the program (15 mins) Pivot (total sample)</field>
+            <field name="model">a.quarter.total.sample</field>
+            <field name="arch" type="xml">
+                <pivot string="TV rating by the program (15 mins) (total sample)">
+                    <field name="channel_id" type="row"/>
+                    <field name="programs_id" type="row"/>
+                    <field name="base" type="measure"/>
+                    <field name="week_end" type="measure"/>
+                    <field name="week_day" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="quarter_action_window">
+            <field name="name">TV rating by the program (15 mins) </field>
+            <field name="res_model">a.quarter</field>
+            <field name="view_mode">list,pivot</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="quarter_total_sample_action_window">
+            <field name="name">TV rating by the program (15 mins) (total sample)</field>
+            <field name="res_model">a.quarter.total.sample</field>
+            <field name="view_mode">list,pivot</field>
+        </record>
+
+
+        <!-- Menu -->
+
+        <menuitem name="TV rating by the program (15 mins) New Methodology" id="quarter_menu_1_list" parent="media_tracking_reports_menu"
+                  action="quarter_action_window" sequence="1"/>
+
+        <menuitem name="TV rating by the program (15 mins) Old Methodology"
+                  id="quarter_menu_total_sample_list" parent="media_tracking_reports_menu"
+                  action="quarter_total_sample_action_window" sequence="1"/>
+
+    </data>
+</odoo>

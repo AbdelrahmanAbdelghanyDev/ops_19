@@ -1,0 +1,764 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+        <record model="ir.ui.view" id="questionnaire_list">
+            <field name="name">Questionnaire list</field>
+            <field name="model">a.questionnaire</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="respondent_id"/>
+                    <field name="telephone"/>
+                    <field name="address"/>
+                    <field name="name"/>
+                    <field name="sec6"/>
+                    <field name="date"/>
+                    <field name="s3"/>
+                    <field name="age"/>
+                    <field name="sec"/>
+                    <field name="s4"/>
+                </list>
+            </field>
+        </record>
+        <!-- explicit form view definition -->
+        <record model="ir.ui.view" id="questionnaire_form">
+            <field name="name">Questionnaire form</field>
+            <field name="model">a.questionnaire</field>
+            <field name="arch" type="xml">
+                <form duplicate="0">
+                    <header>
+                        <button name="action_approve_1" type="object"
+                                string="Submit" class="oe_highlight"
+                                groups="media_tracking.group_admin,base.group_system,media_tracking.group_qc,media_tracking.group_user"
+                                invisible="[('stage_id', '!=', 'new')]"/>
+                        <button name="action_approve_2" type="object"
+                                string="Approve" class="oe_highlight"
+                                groups="media_tracking.group_admin,media_tracking.group_qc"
+                                invisible="[('stage_id', '!=', 'qc')]"/>
+                        <button name="action_approve_3" type="object"
+                                string="Submit QC" class="oe_highlight"
+                                groups="media_tracking.group_admin,media_tracking.group_no_approve"
+                                invisible="[('stage_id', '!=', 'cati')]"/>
+                        <button name="submit_to_cati" type="object"
+                                groups="media_tracking.group_qc"
+                                string="Submit to CATI" class="oe_highlight"
+                                invisible="[('|','|',('stage_id', '=', 'cati'),('stage_id', '=', 'approved'),('stage_id', '=', 'cancel'))]"/>
+                        <button name="action_cancel" type="object"
+                                string="Cancel"
+                                groups="media_tracking.group_admin,base.group_system,media_tracking.group_qc"
+                                invisible="[('stage_id', '=', 'cancel')]"/>
+                        <button name="action_new" type="object"
+                                string="Set to New" invisible="1"/>
+                        <field name="stage_id" widget="statusbar" statusbar_visible="new,cati,qc,approved"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                       name="respondent_id"/>
+                                <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                       name="telephone"/>
+                                <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                       name="address"/>
+                                <field readonly="1"
+                                       name="call_date"/>
+                            </group>
+                            <group>
+                                <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                       name="date"/>
+                                <field readonly="[('stage_id', 'in', ['cancel','approved'])]" name="day_name"
+                                       invisible="1"/>
+                                <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                       name="interviewer_id"
+                                       options="{'no_open': True,'no_create':True, 'no_quick_create': True, 'no_create_edit':True}"/>
+                                <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                       name="interviewer_code"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="استمارة التصفية" name="tab_1">
+                                <div class="oe_right">
+                                    <p style="text-align: right">صباح / مساء الخير. انا ….............. من شركة اوه
+                                        لابحاث التسويق. النهاردة احنا
+                                        بنعمل دراسة بين اشخاص مختلفين عن التليفزيون و الأعلانات ، ونحب نسأل حضرتك بعض
+                                        الاسئلة. هل حضرتك ممكن تشاركنا في افكارك وارائك (اكمل فقط لو وافق المجيب)
+                                    </p>
+                                </div>
+                                <group style="text-align: right" string="S1">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field name="s1_continue" invisible="1"/>
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   name="s1" widget="many2many_tags" style="text-align: right"
+                                                   required="1"
+                                                   options="{'no_open': True,'no_create':True, 'no_quick_create': True, 'no_create_edit':True}">
+                                            </field>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">
+                                                هل حضرتك او أى حد من أفراد أسرتك بيشتغل فى أى مجال من المجالات
+                                                التالية؟
+                                            </p>
+                                            <b style="text-align: right">
+                                                الباحث، اقرأ كل مجال على حدى و انتظر الاجابه من المجيب. اجابات متعددة
+                                            </b>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group invisible="[('s1_continue', '=',False)]" style="text-align: right"
+                                       string="S2">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   name="s2" widget="radio" style="text-align: right"
+                                                   options="{'horizontal': true}">
+                                            </field>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                هل حضرتك شاركت فى أى أبحاث تسويق خلال الـ 6 شهور اللى فاتوا و لا لأ؟
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group invisible="['|',('s1_continue', '=',False),('s2', '!=', '1')]"
+                                       style="text-align: right" string="S3">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="[('s2', '=', '1')]"
+                                                   name="age" style="text-align: right"/>
+                                            <br></br>
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="[('s2', '=', '1')]"
+                                                   name="s3" style="text-align: right" widget="selection"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">
+                                                ممكن حضرتك تقوللى عندك كام سنه ؟
+                                            </p>
+                                            <b style="text-align: right">
+                                                اجابة واحدة. اجابه تلقائيه لا تقرأ
+                                            </b>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group invisible="['|','|',('s1_continue', '=',False),('s2', '!=', '1'),('s3', '=', '1')]"
+                                       style="text-align: right" string="S4">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   name="s4" widget="radio" style="text-align: right"
+                                                   options="{'horizontal': true}">
+                                            </field>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                للباحث, من فضلك علم نوع المجيب.
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group invisible="['|','|','|',('s1_continue', '=',False),('s2', '!=', '1'),('s3', '=', '1'),('s5', '=', 0)]"
+                                       style="text-align: right" string="S5">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   name="s5" style="text-align: right" invisible="1"/>
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   name="sec" force_save="1"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                المستوى الأجتماعي
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group invisible="['|','|',('s1_continue', '=',False),('s2', '!=', '1'),('s3', '=', '1')]"
+                                       style="text-align: right" string="‫‪S5a‬‬">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   name="s5a" widget="radio" style="text-align: right"
+                                                   options="{'horizontal': true}"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                ‫هل حضرتك اتفرجت على التليفزيون امبارح؟
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group invisible="['|','|','|',('s1_continue', '=',False),('s2', '!=', '1'),('s3', '=', '1'),('s5a','=','1')]"
+                                       style="text-align: right" string="‫‪S6‬‬">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   name="s6" widget="radio" style="text-align: right"
+                                                   options="{'horizontal': true}"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                هل حضرتك بتتفرج على التليفزيون ومتابع اى برامج او مسلسلات اللى بتيجى فى
+                                                التليفزيون بشكل مستمر؟
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group invisible="['|','|','|','|',('s1_continue', '=',False),('s2', '!=', '1'),('s3', '=', '1'),('s5a','=','1'),('s6','=','1')]"
+                                       style="text-align: right" string="‫‪S7‬‬">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   name="s7" widget="radio" style="text-align: right"
+                                                   options="{'horizontal': true}"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                ‫المنطقة‬
+                                            </p>
+                                            <p style="text-align: right">
+                                                <field name="show_demographics"/>
+                                                <label for="show_demographics" string="عرض الديموغرافيا"/>
+                                            </p>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right" style="background-color:#00ff00"
+                                             invisible="['|','|','|','|','|',('s1_continue', '=',False),('s2', '!=', '1'),('s3', '=', '1'),('s5a','=','1'),('s6','=','1'),('s7','!=','1')]">
+                                            <b style="text-align: right">Go To Next Page</b>
+                                        </div>
+                                    </group>
+                                </group>
+                            </page>
+                            <page invisible="[('show_demographics','=', False)]"
+                                  string="‫الديموغرافيا‬" name="tab_2">
+                                <h3 style="text-align: center">الوظيفة</h3>
+                                <separator/>
+                                <group style="text-align: right" string="‫‪SEC1.A‬‬">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="['&amp;', ('s7', '=', '1'), ('show_demographics', '=', True)]"
+                                                   name="sec1_a" style="text-align: right" widget="selection"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                أي مما يلي الأقرب لوصف وظيفتك الأساسية؟(المجيب)
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group style="text-align: right" string="‫‪SEC1.B‬‬">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="['&amp;', ('s7', '=', '1'), ('show_demographics', '=', True)]"
+                                                   name="sec1_b" style="text-align: right" widget="selection"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                ما الوظيفة الأساسية للعائل الرئيسي لأسرتك؟(رب الأسرة)
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <h3 style="text-align: center">مستوى التعليم</h3>
+                                <separator/>
+                                <group style="text-align: right" string="‫‪SEC2.A‬‬">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="['&amp;', ('s7', '=', '1'), ('show_demographics', '=', True)]"
+                                                   name="sec2_a" style="text-align: right" widget="selection"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                هل يمكنك إبلاغي بأعلى مستوى تعليمي حصل عليه العائل الرئيسي لأسرتك؟
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group style="text-align: right" string="‫‪SEC2.B‬‬">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="['&amp;', ('s7', '=', '1'), ('show_demographics', '=', True)]"
+                                                   name="sec2_b" style="text-align: right" widget="selection"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                هل يمكنك إبلاغي بأعلى مستوى تعليمي حصلت عليه؟
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group style="text-align: right" string="‫‪SEC3‬‬">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   name="sec3" widget="radio" style="text-align: right"
+                                                   options="{'horizontal': true}"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                هل أنت أو أي من أفراد أسرتك أعضاء في ناد رياضي؟
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group style="text-align: right" string="‫‪SEC4‬‬"
+                                       invisible="[('sec3','!=','1')]">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="[('sec3', '=', '1')]"
+                                                   name="sec4" widget="many2many_tags"
+                                                   style="text-align: right;width:500px"
+                                                   options="{'no_open': True,'no_create':True, 'no_quick_create': True, 'no_create_edit':True}"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                أي من التالي، إن وُجد، تشترك أنت أو أحد أفراد أسرتك في عضويته؟
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group style="text-align: right" string="SEC4a‬‬">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   name="sec4a" style="text-align: right" widget="radio"
+                                                   options="{'horizontal': true}"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                هل سبق لك السفر خارج مصر من قبل؟
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group style="text-align: right" string="SEC4b "
+                                       invisible="[('sec4a', '!=', '2')]">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="[('sec4a', '=', '2')]"
+                                                   name="sec4b_m2m" widget="many2many_tags"
+                                                   style="text-align: right;width:500px"
+                                                   options="{'no_open': True,'no_create':True, 'no_quick_create': True, 'no_create_edit':True}"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                الغرض من السفر
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group style="text-align: right" string="SEC4c‬‬">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="['&amp;',('s7', '=', '1'), ('show_demographics', '=', True)]"
+                                                   name="sec4c_m2m" widget="many2many_tags"
+                                                   style="text-align: right;width:500px"
+                                                   options="{'no_open': True,'no_create':True, 'no_quick_create': True, 'no_create_edit':True}"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                أي من هذه الأجهزة، إن وُجدت، تمتلك؟
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group style="text-align: right" string="‫‪SEC5‬‬">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="['&amp;', ('s7', '=', '1'), ('show_demographics', '=', True)]"
+                                                   name="sec5" style="text-align: right" widget="selection"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                كم عدد السيارات التي لديكم في المنزل؟
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group style="text-align: right" string="‫‪SEC6‬‬">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="['&amp;', ('s7', '=', '1'), ('show_demographics', '=', True)]"
+                                                   name="sec6" style="text-align: right" widget="selection"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                Region
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group style="text-align: right" string="‫‪SEC6a‬‬"
+                                       invisible="[('sec6', '!=', '1')]">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="['&amp;', ('sec6', '=', '1'), ('show_demographics', '=', True)]"
+                                                   name="sec6a" style="text-align: right" widget="selection"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                أي مما يلي الأقرب لوصف منطقتك السكنية
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group style="text-align: right" string="‫‪SEC6b‬‬"
+                                       invisible="['|',('sec6', '=', '1'),('sec6', '=', False)]">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   name="sec6b" style="text-align: right" widget="radio"
+                                                   options="{'horizontal': true}"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                مستوى منطقة السكن (خارج القاهرة)
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group style="text-align: right" string="‫‪SEC7‬‬">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="['&amp;', ('s7', '=', '1'), ('show_demographics', '=', True)]"
+                                                   name="sec7" style="text-align: right" widget="selection"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                نوع السكن
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group style="text-align: right" string="‫‪SEC8‬‬">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="['&amp;',('s7', '=', '1'), ('show_demographics', '=', True)]"
+                                                   name="sec8" style="text-align: right" widget="selection"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">‫
+                                                كم يبلغ إجمالي الدخل الشهري لأسرتك؟
+                                            </p>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right" style="background-color:#00ff00"
+                                             invisible="['|','|','|','|','|',('s1_continue', '=',False),('s2', '!=', '1'),('s3', '=', '1'),('s5a','=','1'),('s6','=','1'),('s7','!=','1')]">
+                                            <b style="text-align: right">Go To Next Page</b>
+                                        </div>
+                                    </group>
+                                </group>
+                            </page>
+                            <page invisible="['|','|','|','|','|',('s1_continue', '=',False),('s2', '!=', '1'),('s3', '=', '1'),('s5a','=','1'),('s6','=','1'),('s7','!=','1')]"
+                                  string="Tv Section" name="tab_3">
+                                <group style="text-align: right" string="Q1">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="[('show_demographics', '=', True)]"
+                                                   name="q1" style="text-align: right"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">
+                                                ممكن تقولي المدة اللي اتفرجت عليها على التلفزيون امبارح؟
+                                            </p>
+                                            <b style="text-align: right" invisible="[('q1', '!=','1')]">
+                                                انهي المكالمة و اشكر المجيب
+                                            </b>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group style="text-align: right" string="Q2" invisible="[('q1','=','1')]">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   name="q2" widget="radio" style="text-align: right"
+                                                   options="{'horizontal': true}"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">
+                                                هل حضرتك اتفرجت على برامج أو مسلسلات أو أفلام او ماتشات على أي من
+                                                القنوات ده امبارح؟
+                                            </p>
+                                            <b>
+                                                قنوات‬ ‫سي‬ ‫بي‬ ‫سي‬ - ‬قنوات‬ ‫دي ام سي - ‬قنوات‬ ‫الحياة ‬-‬
+                                                قنوات‬ ‫النهار‬ - ‬قنوات‬ ‫أون‬ - ‬قنوات‬ ‫روتانا‬ - ‬قنوات‬ ‫سي‬ ‫بي‬
+                                                ‫ام
+                                                ‬
+                                            </b>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group string="Q3" style="text-align: right"
+                                       invisible="['|',('q1','=','1'),('q2','=','1')]">
+                                    <div class="oe_right">
+                                        <p style="text-align: right">بالتفكير في امبارح, ممكن تقولي ايه كل الاوقات اللى
+                                            اتفرجت فيها علي التليفزيون؟ اجابات متعددة
+                                        </p>
+                                        <b>للباحث: أكد على المجيب واسأله: حضرتك مفيش أي وقت تاني اتفرجت فيه على
+                                            التلفزيون امبارح؟,يجب على المجيب ذكر 4 ربع ساعة على الأقَل (يجب اختيار 4
+                                            اكواد على الأقَل)
+                                        </b>
+                                    </div>
+                                    <field name="check_q3" invisible="1"/>
+                                    <field name="is_q3_editor" invisible="0"/>
+                                    <field name="q3" nolabel="1" style="text-align: left"
+                                           readonly="[('is_q3_editor', '=', False), ('stage_id', 'not in', ['new', 'cati', 'qc'])]">
+                                        <list editable="bottom">
+                                            <field name="header" readonly="0"/>
+                                            <field name="time_from" readonly="0"
+                                                   options="{'no_open': True, 'no_create': True, 'no_quick_create': True, 'no_create_edit': True}"/>
+                                            <field name="time_to" readonly="0"
+                                                   options="{'no_open': True, 'no_create': True, 'no_quick_create': True, 'no_create_edit': True}"/>
+                                            <field name="channel_id" options="{'no_open': True, 'no_create_edit': True}"
+                                                   readonly="0"/>
+                                            <field name="programs_id"
+                                                   options="{'no_open': True, 'no_create_edit': True}"
+                                                   readonly="[('channel_id', '=', False)]"/>
+                                            <field name="period" readonly="0"/>
+                                        </list>
+                                    </field>
+                                    <group>
+                                        <button name="open_wizard" string="Add Line" type="object"
+                                                class="oe_highlight"
+                                                groups="media_tracking.group_user,media_tracking.group_qc,media_tracking.group_admin"
+                                                invisible="[('stage_id','!=','new')]"/>
+                                        <button name="open_wizard" string="Add Line" type="object"
+                                                class="oe_highlight"
+                                                groups="media_tracking.group_no_approve"
+                                                invisible="[('stage_id','in',['approved', 'canceled'])]"/>
+                                    </group>
+                                </group>
+                                <div class="oe_eight">
+                                    <p style="text-align: right">
+                                        <field name="show_internet_questions"/>
+                                        <label for="show_internet_questions" string="أسئلة الانترنت"/>
+                                    </p>
+                                </div>
+                                <group>
+                                    <div class="oe_right" style="background-color:#00ff00"
+                                         invisible="['|','|','|','|','|','|','|',('q1','=','1'),('q2','=','1'),('s1_continue', '=',False),('s2', '!=', '1'),('s3', '=', '1'),('s5a','=','1'),('s6','=','1'),('s7','!=','1')]">
+                                        <b style="text-align: right">Go To Next Page</b>
+                                    </div>
+                                </group>
+                            </page>
+                            <page invisible="[('show_internet_questions','=', False)]"
+                                  string="اسئلة الإنترنت" name="tab_4">
+                                <div class="oe_right">
+                                    <p style="text-align: right">دلوقتى انا حسألك شوية أسئلة عن الإنترنت.</p>
+                                </div>
+                                <group style="text-align: right" string="N1">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field name="n1_id" invisible="1"/>
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="['&amp;', ('q2', '=', '2'), ('show_internet_questions', '=', True)]"
+                                                   name="n1" style="text-align: right;margin-right:20px"
+                                                   options="{'no_open': True,'no_create':True, 'no_quick_create': True, 'no_create_edit':True}"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">
+                                                يا ترى حضرتك بتتفرج ومتابع أي حلقات مسلسلات أو برامج أو فيديوهات على
+                                                الانترنت ولا لأ؟ اجابة واحدة
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group style="text-align: right" string="N2"
+                                       invisible="[('n1_id', 'not in', [1,2])]">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="[('n1_id', 'in', [1,2])]"
+                                                   name="n2" widget="many2many_tags" style="text-align: right"
+                                                   options="{'no_open': True,'no_create':True, 'no_quick_create': True, 'no_create_edit':True}"/>
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   name="open_n2_other" invisible="1"/>
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   name="show_n3" invisible="1"/>
+                                            <field name="report_n3" invisible="1"/>
+                                            <field name="n2_other" style="text-align: right"
+                                                   invisible="[('open_n2_other', '!=', True)]"
+                                                   readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="[('open_n2_other', '=', True)]"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">
+                                                طيب وايه هو نوع المحتوى اللي اتفرجت عليه وتابعته خلال الشهر اللي احنا
+                                                فيه ده؟ حث المجيب . اجابات متعددة
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group style="text-align: right" string="N3"
+                                       invisible="[('show_n3', '!=', True)]">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="[('show_n3', '=', True)]"
+                                                   name="n3" widget="many2many_tags" style="text-align: right"
+                                                   options="{'no_open': True,'no_create':True, 'no_quick_create': True, 'no_create_edit':True}"/>
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   name="open_n3_other" invisible="1"/>
+                                            <field name="n3_other" style="text-align: right"
+                                                   invisible="[('open_n3_other', '!=', True)]"
+                                                   readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="[('open_n3_other', '=', True)]"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">
+                                                ‫ممكن تقولي اتفرجت على أنهي مواقع؟ حث المجيب . اجابات متعددة‬
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group style="text-align: right" string="N4"
+                                       invisible="[('n1_id', 'not in', [1,2,3])]">
+                                    <group>
+                                        <div class="oe_right">
+                                            <field name="n4_name" invisible="1"/>
+                                            <field readonly="[('stage_id', 'in', ['cancel','approved'])]"
+                                                   required="[('n1_id', 'in', [1,2,3])]"
+                                                   name="n4" style="text-align: right"
+                                                   options="{'no_open': True,'no_create':True, 'no_quick_create': True, 'no_create_edit':True}"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <div class="oe_right">
+                                            <p style="text-align: right">
+                                                ‫‫طيب ممكن تقوللى امتى اكتر وقت بتدخل فيه على الإنترنت خلال اليوم؟
+                                            </p>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group>
+                                    <div class="oe_right" style="background-color:#ff0000">
+                                        <b style="text-align: right">Thank you</b>
+                                    </div>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="recall_today_dates_editable" model="res.groups">
+            <field name="name">Recall/Today Dates Editable</field>
+        </record>
+        <!-- Inherit Form View to Modify it -->
+        <record id="questionnaire_form_editable" model="ir.ui.view">
+            <field name="name">questionnaire.form.editable</field>
+            <field name="model">a.questionnaire</field>
+            <field name="inherit_id" ref="media_tracking.questionnaire_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//sheet/group[1]/group[1]/field[@name='call_date']" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                    <attribute name="groups">media_tracking.recall_today_dates_editable</attribute>
+                </xpath>
+
+                <xpath expr="//sheet/group[1]/group[2]/field[@name='date']" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                    <attribute name="groups">media_tracking.recall_today_dates_editable</attribute>
+                </xpath>
+
+            </field>
+        </record>
+        <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="questionnaire_action_window">
+            <field name="name">Questionnaire</field>
+            <field name="res_model">a.questionnaire</field>
+            <field name="view_mode">list,form</field>
+        </record>
+        <!-- Menu -->
+        <menuitem name="Questionnaire" id="questionnaire_menu_1_list" parent="media_tracking_menu"
+                  action="questionnaire_action_window" sequence="1"
+                  groups="media_tracking.group_admin,base.group_system,media_tracking.group_qc,media_tracking.group_user,media_tracking.group_no_approve"/>
+        <record id="contacts.res_partner_menu_contacts" model="ir.ui.menu">
+            <field name="parent_id" ref="media_tracking.media_tracking_menu"/>
+            <field name="sequence">2</field>
+            <field name="group_ids"
+                   eval="[(6,0,[ref('media_tracking.group_admin'), ref('media_tracking.group_qc'), ref('media_tracking.group_user')])]"/>
+        </record>
+    </data>
+</odoo>

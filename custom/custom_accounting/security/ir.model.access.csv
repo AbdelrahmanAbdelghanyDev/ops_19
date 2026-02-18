@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_cash_in_out_billing,custom_accounting.custom_accounting billing,model_account_cash_in_out,account.group_account_invoice,1,1,1,0
+access_account_cash_in_out_accountant,custom_accounting.custom_accounting Accountant,model_account_cash_in_out,account.group_account_user,1,1,1,0
+access_account_cash_in_out_advisor,custom_accounting.custom_accounting Advisor,model_account_cash_in_out,account.group_account_manager,1,1,1,0

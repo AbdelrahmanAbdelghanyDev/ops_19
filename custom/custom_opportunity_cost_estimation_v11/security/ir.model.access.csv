@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_lead_product_Line,custom_opportunity_cost_estimation_v11.Lead_product_line,model_crm_product_line,base.group_user,1,1,1,1
+access_opportunity_cost_estimation,custom_opportunity_cost_estimation_v11.opportunity_cost_estimation,model_opportunity_cost_estimation,base.group_user,1,1,1,1

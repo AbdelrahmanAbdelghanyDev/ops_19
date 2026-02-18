@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+project_user_access,project.task.teams.user,model_project_task_teams,project.group_project_user,1,0,0,0
+project_manager_access,project.task.teams.manager,model_project_task_teams,project.group_project_manager,1,1,1,1
+project_memebers_user_access,team.members.user,model_team_members,project.group_project_user,1,0,0,0
+project_memebers_manager_access,team.members.manager,model_team_members,project.group_project_manager,1,1,1,1
+revenue_team_access,revenue.team.access,model_revenue_team,base.group_user,1,1,1,1
+executive_team_access,executive.team.access,model_executive_team,base.group_user,1,1,1,1
+add_revenue_crm_lead,add.revenue.crm.lead,model_crm_lead,base.group_user,1,1,1,1
