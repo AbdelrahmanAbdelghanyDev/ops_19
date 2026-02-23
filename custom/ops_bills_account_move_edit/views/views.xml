@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="account_move_bills_form_date_fields" model="ir.ui.view">
+            <field name="name">account.move.bills.date.fields</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='invoice_date']" position="attributes">
+                    <attribute name="attrs">
+                        {'readonly': [('move_type', 'in',['in_invoice','in_refund'])]}
+                    </attribute>
+                    <attribute name="force_save">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='invoice_date']/..//field[@name='date']" position="after">
+                    <field name="awe_due_date" force_save="1"/>
+                </xpath>
+
+                <xpath expr="//div[@class='o_attachment_preview']" position="replace"/>
+            </field>
+        </record>
+
+        <record id="account_move_bills_tree_date_fields" model="ir.ui.view">
+            <field name="name">account.move.bills.date.fields</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_invoice_tree"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='invoice_date_due']" position="after">
+                    <field name="awe_due_date"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

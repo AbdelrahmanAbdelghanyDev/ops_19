@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="ops_confirmation_date_disable.list">
+      <field name="name">ops_confirmation_date_disable list</field>
+      <field name="model">ops_confirmation_date_disable.ops_confirmation_date_disable</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="ops_confirmation_date_disable.action_window">
+      <field name="name">ops_confirmation_date_disable window</field>
+      <field name="res_model">ops_confirmation_date_disable.ops_confirmation_date_disable</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="ops_confirmation_date_disable.action_server">
+      <field name="name">ops_confirmation_date_disable server</field>
+      <field name="model_id" ref="model_ops_confirmation_date_disable_ops_confirmation_date_disable"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="ops_confirmation_date_disable" id="ops_confirmation_date_disable.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="ops_confirmation_date_disable.menu_1" parent="ops_confirmation_date_disable.menu_root"/>
+    <menuitem name="Menu 2" id="ops_confirmation_date_disable.menu_2" parent="ops_confirmation_date_disable.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="ops_confirmation_date_disable.menu_1_list" parent="ops_confirmation_date_disable.menu_1"
+              action="ops_confirmation_date_disable.action_window"/>
+    <menuitem name="Server to list" id="ops_confirmation_date_disable" parent="ops_confirmation_date_disable.menu_2"
+              action="ops_confirmation_date_disable.action_server"/>
+-->
+  </data>
+</odoo>

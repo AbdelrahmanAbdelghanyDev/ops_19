@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="ce_report_1">
+            <t t-call="web.basic_layout">
+                <t t-if="not company">
+                    <!-- Multicompany -->
+                    <t t-if="company_id">
+                        <t t-set="company" t-value="company_id"/>
+                    </t>
+                    <t t-elif="o and 'company_id' in o">
+                        <t t-set="company" t-value="o.company_id.sudo()"/>
+                    </t>
+                    <t t-else="else">
+                        <t t-set="company" t-value="res_company"/>
+                    </t>
+                </t>
+
+                <div class="header">
+                    <div class="row">
+                        <div class="col-3 mb4">
+                            <img src='/web/binary/company_logo' style="max-height: 45px;"/>
+                        </div>
+                        <div class="col-9 text-right" style="margin-top:22px;" t-field="company.report_header"
+                             name="moto"/>
+                    </div>
+                    <div t-if="company.logo or company.report_header" class="row zero_min_height">
+                        <div class="col-12">
+                            <div style="border-bottom: 1px solid black;"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6" name="company_address">
+                            <div t-field="company.partner_id"
+                                 t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'
+                            />
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <br/>
+                <div class="footer o_standard_footer">
+                    <div class="text-center" style="border-top: 1px solid black;">
+                        <ul class="list-inline mb4">
+                            <!-- using the list-inline-item class from bootstrap causes weird behaviours in pdf report
+                                 adding d-inline class fixes the problem-->
+                            <li t-if="company.phone" class="list-inline-item d-inline">Phone:
+                                <span t-field="company.phone"/>
+                            </li>
+                            <li t-if="company.email" class="list-inline-item d-inline">Email:
+                                <span t-field="company.email"/>
+                            </li>
+                            <li t-if="company.website" class="list-inline-item d-inline">Web:
+                                <span t-field="company.website"/>
+                            </li>
+                            <li t-if="company.vat" class="list-inline-item d-inline"><t
+                                    t-esc="company.country_id.vat_label or 'Tax ID'"/>:
+                                <span t-field="company.vat"/>
+                            </li>
+                        </ul>
+
+                        <div name="financial_infos">
+                            <span t-field="company.report_footer"/>
+                        </div>
+
+                        <div t-if="report_type == 'pdf'" class="text-muted">
+                            Page:
+                            <span class="page"/>
+                            /
+                            <span class="topage"/>
+                        </div>
+                    </div>
+                </div>
+
+
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <header>
+                            <h4 style="margin-left:1%;">
+                                <span t-field="o.seq"/>
+                            </h4>
+                            <br/>
+                            <div class="row">
+                                <div class="col-2" style="float:left;margin-left:2%;">
+                                    <div>
+                                        <b>Customer</b>
+                                    </div>
+                                    <div>
+                                        <b>Opportunity</b>
+                                    </div>
+                                    <div t-if="o.sales_team">
+                                        <b>Sales Team</b>
+                                    </div>
+                                    <div t-if="o.sales_person">
+                                        <b>Sales Person</b>
+                                    </div>
+                                    <div>
+                                        <b>Price List</b>
+                                    </div>
+                                    <div>
+                                        <b>Fix Rate</b>
+                                    </div>
+                                </div>
+                                <div class="col-4" style="float:left;margin-left:8%;">
+                                    <div t-field="o.customer.name"/>
+                                    <div t-field="o.opportunity.name"/>
+                                    <div t-field="o.sales_team.name"/>
+                                    <div t-field="o.sales_person.name"/>
+                                    <div t-field="o.price_list.name"/>
+                                    <div t-field="o.fx"/>
+                                </div>
+                                <div class="col-2" style="float:left;margin-left:8%;">
+                                    <div>
+                                        <b>Estimation Date</b>
+                                    </div>
+                                    <div t-if="o.accounting_installed">
+                                        <b>Budget Date From</b>
+                                    </div>
+                                    <div t-if="o.accounting_installed and o.budget">
+                                        <b>Budget</b>
+                                    </div>
+                                    <div t-if="o.sale_order">Sale Order</div>
+                                    <div>
+                                        <b>Total Margin</b>
+                                    </div>
+                                    <div>
+                                        <b>Margin Percent</b>
+                                    </div>
+                                    <div t-if="o.research_type">
+                                        <b>Research Type</b>
+                                    </div>
+                                    <div t-if="o.waves">
+                                        <b>Waves</b>
+                                    </div>
+                                    <div t-if="o.cost_of_waves">
+                                        <b>Cost of Waves</b>
+                                    </div>
+                                    <div t-if="o.cpi_x">
+                                        <b>CPI</b>
+                                    </div>
+                                    <div t-if="o.third_party_cost">
+                                        <b>Third Party Cost</b>
+                                    </div>
+                                    <div t-if="o.travel_expenses">
+                                        <b>Travel Expense</b>
+                                    </div>
+
+                                </div>
+                                <div class="col-2" style="float:left;margin-left:8%;">
+                                    <div t-field="o.estimate_date"/>
+                                    <div t-if="o.accounting_installed"
+                                         style="white-space: nowrap;">
+                                        <span t-field="o.budget_date_from"/>
+                                        <t t-if="o.budget_date_to">To
+                                            <span t-if="o.budget_date_to" t-field="o.budget_date_to"/>
+                                        </t>
+                                    </div>
+                                    <div t-if="o.accounting_installed"
+                                         t-field="o.budget"/>
+                                    <div t-if="o.sale_order" t-field="o.sale_order"/>
+                                    <div t-field="o.t_margin"/>
+                                    <div t-field="o.t_margin_percentage"/>
+                                    <div t-if="o.research_type">
+                                        <div t-field="o.research_type"/>
+                                    </div>
+                                    <div t-if="o.waves">
+                                        <div t-field="o.waves"/>
+                                    </div>
+                                    <div t-if="o.cost_of_waves">
+                                        <div t-field="o.cost_of_waves"/>
+                                    </div>
+                                    <div t-if="o.cpi_x">
+                                        <div t-field="o.cpi_x"/>
+                                    </div>
+                                    <div t-if="o.third_party_cost">
+                                        <div t-field="o.third_party_cost"/>
+                                    </div>
+                                    <div t-if="o.travel_expenses">
+                                        <div t-field="o.travel_expenses"/>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </header>
+                        <br/>
+                        <div class="container">
+                            <table t-if="o.cost_estimation_line" class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <b>Cost Estimation</b>
+                                    </tr>
+                                    <tr>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>Salable
+                                                Product
+                                            </b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>SP
+                                                Description
+                                            </b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>SP Qty</b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>Cost Item</b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>CI Unit of Measure</b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>CI
+                                                Description
+                                            </b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>CI Type</b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>CI Qty/SP</b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>CI Unit
+                                                Cost(Currency)
+                                            </b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>Taxes</b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>CI Unit
+                                                Cost
+                                            </b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>CI
+                                                Cost/SP
+                                            </b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>Total
+                                                CI/Qty
+                                            </b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>CI Total
+                                                Cost
+                                            </b>
+                                        </td>
+                                        <td t-if="o.accounting_installed"
+                                            style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>Budgetary
+                                                Position
+                                            </b>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.cost_estimation_line" t-as="t">
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.salable_product"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.sp_desc"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.sp_quant"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.cost_item"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.cost_item_uom_id"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.cost_item_description"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.cost_item_type"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.cost_item_quant_sp"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.cost_item_cost_currency"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <t t-if="t.taxes">
+                                                <t t-foreach="t.taxes" t-as="tx">
+                                                    <span t-field="tx.name"/>
+                                                </t>
+                                            </t>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.cost_item_unit_cost"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.cost_item_cost_sp"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.total_cost_item_quantity"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.total_cost_item_cost"/>
+                                        </td>
+                                        <td t-if="o.accounting_installed"
+                                            style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.budgetary_position"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div style="page-break-after: always;"/>
+                            <br/>
+                            <br/>
+                            <table t-if="o.products_line" class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <b>Methodology</b>
+                                    </tr>
+                                    <tr>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>Salable Product</b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>SP Description</b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>CI Description</b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>SP Qty</b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>UoM</b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>Unit Cost</b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>Taxes</b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>Total Cost</b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>Markup</b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>Unit Price</b>
+                                        </td>
+                                        <td style="border:2px solid gray;text-align:center;font-size: 15px;background-color:#E0E0E0">
+                                            <b>Subtotal</b>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.products_line" t-as="t">
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.salable_product"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.sp_desc"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.cost_item_description"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.sp_quant"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.unit_of_measure"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.unit_cost"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <t t-if="t.taxes">
+                                                <t t-foreach="t.taxes" t-as="tx">
+                                                    <span t-field="tx.name"/>
+                                                </t>
+                                            </t>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.total_cost"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.margin"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.unit_price"/>
+                                        </td>
+                                        <td style="border:1px solid gray;text-align:center;">
+                                            <span t-field="t.subtotal"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br/>
+                            <br/>
+                            <div>
+                                <span>
+                                    <b>Notes:</b>
+                                </span>
+                                <span t-field="o.notes" style="margin-left:2%"/>
+                            </div>
+
+                            <div class="clearfix">
+                                <div class="row">
+                                    <div style="margin-left:78%">
+                                        <table class="table table-condensed"
+                                               style="min-width: 250px;max-width: 400px;page-break-inside: avoid;">
+                                            <tbody>
+                                                <tr t-if="o.total_material_cost">
+                                                    <td>Total Materials Cost:</td>
+                                                    <td>
+                                                        <span t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"
+                                                              t-field="o.total_material_cost"/>
+                                                    </td>
+                                                </tr>
+                                                <tr t-if="o.total_labour_cost">
+                                                    <td>Total Labour Cost:</td>
+                                                    <td>
+                                                        <span t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"
+                                                              t-field="o.total_labour_cost"/>
+                                                    </td>
+                                                </tr>
+                                                <tr t-if="o.total_overhead_cost">
+                                                    <td>Total Overhead Cost:</td>
+                                                    <td>
+                                                        <span t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"
+                                                              t-field="o.total_overhead_cost"/>
+                                                    </td>
+                                                </tr>
+                                                <tr t-if="o.total_product_line_tax">
+                                                    <td>Taxes:</td>
+                                                    <td>
+                                                        <span t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"
+                                                              t-field="o.total_product_line_tax"/>
+                                                    </td>
+                                                </tr>
+                                                <tr t-if="o.total_cost">
+                                                    <td>Total Cost:</td>
+                                                    <td>
+                                                        <span t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"
+                                                              t-field="o.total_cost"/>
+                                                    </td>
+                                                </tr>
+                                                <tr t-if="o.total_unit_price">
+                                                    <td>Total Selling Price:</td>
+                                                    <td>
+                                                        <span t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"
+                                                              t-field="o.total_unit_price"/>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+
+    </data>
+</odoo>

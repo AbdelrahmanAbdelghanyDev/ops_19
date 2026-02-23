@@ -1,0 +1,47 @@
+<odoo>
+    <data>
+        <record id="paperformat_cost_estimation_landscape" model="report.paperformat">
+            <field name="name">PDF Cost Estimation Landscape</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">297</field>
+            <field name="page_width">210</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">23</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">20</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+                id="cost_estimation_report"
+                model="cost.estimation"
+                report_type="qweb-pdf"
+                string="Cost Estimation"
+                name="cost_estimation_reports.ce_report_1"
+                file="cost_estimation_reports.ce_report_1"
+                paperformat="paperformat_cost_estimation_landscape"
+        />
+        <report
+                id="cost_estimation_product_report"
+                model="cost.estimation"
+                report_type="qweb-pdf"
+                string="Cost Estimation/Product"
+                name="cost_estimation_reports.ce_report_2"
+                file="cost_estimation_reports.ce_report_2"
+                paperformat="paperformat_cost_estimation_landscape"
+        />
+        <report
+                id="cost_estimation_type_report"
+                model="cost.estimation"
+                report_type="qweb-pdf"
+                string="Cost Estimation/Type"
+                name="cost_estimation_reports.ce_report_3"
+                file="cost_estimation_reports.ce_report_3"
+                paperformat="paperformat_cost_estimation_landscape"
+        />
+    </data>
+</odoo>
