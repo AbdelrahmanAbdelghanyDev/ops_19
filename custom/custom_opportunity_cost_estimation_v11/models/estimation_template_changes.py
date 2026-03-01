@@ -15,7 +15,7 @@ class sale_order_line_changes(models.Model):
 
     _inherit='sale.order.line'
 
-    estimation_id = fields.Many2one('cost.estimation.template')
+    estimation_id = fields.Many2one('cost.estimation.template',ondelete='cascade')
 
 
 

@@ -13,16 +13,16 @@
 
 
                 <xpath expr="//page[@name='general_information']" position="after">
-                    <page string="Time Estimation"  attrs="{'invisible': [('cost_ok', '=', True)]}">
+                    <page string="Time Estimation"  invisible="[('cost_ok', '=', True)]">
                         <field name="time_estimation_ids">
-                            <tree editable="bottom">
+                            <list editable="bottom">
                                 <field name="product_id" domain="[('cost_ok', '=', True)]"/>
                                 <field name="description"/>
                                 <field name="qty"/>
                                 <field name="uom"/>
                                 <field name="cost_item_type"/>
-                                <field name="budgetary_position"/>
-                            </tree>
+<!--                                <field name="budgetary_position"/>-->
+                            </list>
                         </field>
                     </page>
                 </xpath>
@@ -40,16 +40,16 @@
 
 
                 <xpath expr="//page[@name='general_information']" position="after">
-                    <page string="Time Estimation"  attrs="{'invisible': [('cost_ok', '=', True)]}">
+                    <page string="Time Estimation"  invisible="[('cost_ok', '=', True)]">
                         <field name="time_estimation_ids">
-                            <tree editable="bottom">
+                            <list editable="bottom">
                                 <field name="product_id" domain="[('cost_ok', '=', True)]"/>
                                 <field name="description"/>
                                 <field name="qty"/>
                                 <field name="uom"/>
                                 <field name="cost_item_type"/>
-                                <field name="budgetary_position"/>
-                            </tree>
+<!--                                <field name="budgetary_position"/>-->
+                            </list>
                         </field>
                     </page>
                 </xpath>
@@ -74,7 +74,7 @@
                     <field name="methodology_id" options="{'no_create':True,'no_open': True}" />
                 </xpath>
                 <xpath expr="//field[@name='travel_expenses']" position="after">
-                    <field name="markup" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="markup" readonly="'state', '!=', 'draft'"/>
                 </xpath>
                 <xpath expr="//group[@name='total_cost_item']" position="before">
                     <group colspan="2">
@@ -90,8 +90,8 @@
                 <xpath expr="//notebook" position="inside">
                     <page string="Time Estimation Line">
                         <field name="time_estimation_ids"
-                               attrs="{'readonly': [('state', 'in', ['approved','cancelled'])]}">
-                            <tree editable="bottom">
+                               readonly="[('state', 'in', ['approved','cancelled'])]">
+                            <list editable="bottom">
 
                                 <field name="salable_product"
                                        options="{'no_quick_create': True, 'no_create_edit' : True,'no_open': True}"/>
@@ -113,7 +113,7 @@
 
                                 <field name="total_cost_item_quantity" optional="hide"/>
                                 <field name="total_cost_item_cost"/>
-                            </tree>
+                            </list>
                         </field>
                     </page>
                 </xpath>
@@ -125,7 +125,7 @@
             <field name="name">Estimation Methodology</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">estimation.methodology</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
 
         <!-- This Menu Item must have a parent and an action -->

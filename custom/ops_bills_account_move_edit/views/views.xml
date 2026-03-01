@@ -9,8 +9,8 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='invoice_date']" position="attributes">
-                    <attribute name="attrs">
-                        {'readonly': [('move_type', 'in',['in_invoice','in_refund'])]}
+                    <attribute name="readonly">
+                        [('move_type', 'in',['in_invoice','in_refund'])]
                     </attribute>
                     <attribute name="force_save">1</attribute>
                 </xpath>

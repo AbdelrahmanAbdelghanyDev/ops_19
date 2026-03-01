@@ -143,12 +143,12 @@ class TimeEstimationLine(models.Model):
 
     idx_time = fields.Many2one('cost.estimation')
 
-    budgetary_position = fields.Many2one('account.budget.post', string='Budgetary Position')
+    # budgetary_position = fields.Many2one('account.budget.post', string='Budgetary Position')
 
-    @api.onchange('cost_item')
-    def onchange_cost_item_budget(self):
-        if self.cost_item.budgetary_position:
-            self.budgetary_position = self.cost_item.budgetary_position.id
+    # @api.onchange('cost_item')
+    # def onchange_cost_item_budget(self):
+    #     if self.cost_item.budgetary_position:
+    #         self.budgetary_position = self.cost_item.budgetary_position.id
 
     @api.depends('salable_product')
     def _compute_quant(self):
@@ -214,8 +214,8 @@ class ProductTimeCostLine(models.Model):
     uom = fields.Many2one('uom.uom', string='Unit of Measure')
     cost_item_type = fields.Selection(related='product_id.cost_item_type', string="CI Type")
     idt = fields.Many2one('product.template')
-    budgetary_position = fields.Many2one('account.budget.post', related='product_id.budgetary_position',
-                                         string='Budgetary Position')
+    # budgetary_position = fields.Many2one('account.budget.post', related='product_id.budgetary_position',
+    #                                      string='Budgetary Position')
 
     @api.onchange('product_id')
     def _onch_proj(self):

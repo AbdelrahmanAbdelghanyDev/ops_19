@@ -55,7 +55,7 @@
              <field name="inherit_id" ref="crm.crm_lead_view_form"/>
              <field name="arch" type="xml">
                 <data>
-                    <xpath expr="//field[@name='mobile']" position="after">
+                    <xpath expr="//field[@name='function']" position="after">
                         <field name="research_type_id" string="Research Type" domain="[('name','in',['QL','QN'])]"/>
                     </xpath>
                 </data>

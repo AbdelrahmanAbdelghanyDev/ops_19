@@ -43,9 +43,9 @@
                            invisible="[('budget_total', '>', 0),('budget_total_x', '=', 0)]"/>
                     <field name="budget_currency_x" invisible="[('cost_estimation_ref', '=', False)]"/>
                 </xpath>
-                <xpath expr="//group[@name='technical']" position="attributes">
-                    <attribute name="groups">base.group_user</attribute>
-                </xpath>
+<!--                <xpath expr="//group[@name='technical']" position="attributes">-->
+<!--                    <attribute name="groups">base.group_user</attribute>-->
+<!--                </xpath>-->
             </field>
         </record>
         <record id="quotation_cost_inherit" model="ir.ui.view">

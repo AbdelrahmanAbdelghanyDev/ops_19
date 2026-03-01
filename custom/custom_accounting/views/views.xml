@@ -103,7 +103,7 @@ action = {
                 action="action_cash_in_out_report"
                 id="menu_action_cash_in_out_report"
                 name="Cash In Out Report"
-                parent="account_reports.account_reports_partners_reports_menu"
+                parent="account.account_reports_partners_reports_menu"
                 groups="account.group_account_invoice"
                 sequence="10"/>
 

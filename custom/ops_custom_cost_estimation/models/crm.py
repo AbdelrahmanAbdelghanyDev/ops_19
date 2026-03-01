@@ -76,7 +76,7 @@ class CrmLead(models.Model):
                                       'taxes': False,
                                       'fx': 1.0,
                                       'total_cost_item_quantity': 1.0,
-                                      'budgetary_position': product.budgetary_position.id,
+                                      # 'budgetary_position': product.budgetary_position.id,
                                       'total_cost_item_cost': 1.0}
                             cost_estimation_line.append((0, 0, values))
 
@@ -99,7 +99,7 @@ class CrmLead(models.Model):
                                       'taxes': False,
                                       'fx': 1.0,
                                       'total_cost_item_quantity': 1.0,
-                                      'budgetary_position': product.budgetary_position.id,
+                                      # 'budgetary_position': product.budgetary_position.id,
                                       'total_cost_item_cost': 1.0}
                             time_estimation_line.append((0, 0, values))
                     else:
@@ -115,7 +115,7 @@ class CrmLead(models.Model):
                                   'cost_item_unit_cost': 1.0,
                                   'cost_item_cost_currency': 1.0,
                                   'cost_item_type': 'material',
-                                  'budgetary_position': rec.product_id.budgetary_position.id,
+                                  # 'budgetary_position': rec.product_id.budgetary_position.id,
                                   'cost_item_quant_sp': 1.0,
                                   'cost_item_cost_sp': 1.0,
                                   'taxes': False,

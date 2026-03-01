@@ -11,9 +11,9 @@
             <field name="code">model.get_old_converted_revenue()</field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
-            <field name="numbercall">1</field>
-            <field name="nextcall" >2018-07-05 00:00:01</field>
-            <field name="doall" eval="False"/>
+<!--            <field name="numbercall">1</field>-->
+<!--            <field name="nextcall" >2018-07-05 00:00:01</field>-->
+<!--            <field name="doall" eval="False"/>-->
         </record>
     </data>
 </odoo>

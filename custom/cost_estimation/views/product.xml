@@ -26,7 +26,7 @@
                 </xpath>
                 <xpath expr="//field[@name='type']" position="after">
                     <field name="cost_item_type" invisible="[('cost_ok', '=', False)]" required="[('cost_ok','=',True)]"/>
-                    <field name="budgetary_position" invisible="[('cost_ok', '=', False)]" required="[('cost_ok','=',True)]"/>
+<!--                    <field name="budgetary_position" invisible="[('cost_ok', '=', False)]" required="[('cost_ok','=',True)]"/>-->
                 </xpath>
             </field>
         </record>

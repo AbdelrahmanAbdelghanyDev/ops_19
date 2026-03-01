@@ -6,7 +6,7 @@
              <field name="inherit_id" ref="sale.view_order_form"/>
              <field name="arch" type="xml">
                 <data>
-                    <xpath expr="//page//field[@name='order_line']//list//field[@name='tax_id']" position="attributes">
+                    <xpath expr="//page//field[@name='order_line']//list//field[@name='tax_ids']" position="attributes">
                        <attribute name="invisible">True</attribute>
                     </xpath>
                 </data>

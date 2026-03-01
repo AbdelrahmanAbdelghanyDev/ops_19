@@ -1,6 +1,5 @@
 {
     'name': 'Restriction to Project task',
-    'version': '14',
     'category': '',
     'summary': "Restriction to project task by groups",
     'author':

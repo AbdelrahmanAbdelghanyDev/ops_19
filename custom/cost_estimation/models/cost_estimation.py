@@ -31,39 +31,39 @@ class CostEst(models.Model):
                               ('second_approval', 'Waiting 2nd Approval'),
                               ('approved', 'Approved'),
                               ('rejected', 'Rejected'),
-                              ('cancelled', 'Cancelled')], string="State", default='draft', track_visibility='onchange')
+                              ('cancelled', 'Cancelled')], string="State", default='draft', tracking=True)
     customer = fields.Many2one('res.partner', string="Customer", readonly=True, store=True)
     opportunity = fields.Many2one('crm.lead', string="Source Document", readonly=True, store=True)
     sales_team = fields.Many2one("crm.team", string="Sales Team", related='opportunity.team_id',
-                                 track_visibility='onchange', readonly=True)
+                                 tracking=True, readonly=True)
     sales_person = fields.Many2one("res.users", string="Sales Person", related='opportunity.user_id',
-                                   track_visibility='onchange', readonly=True)
+                                   tracking=True, readonly=True)
 
-    price_list = fields.Many2one('product.pricelist', string="PriceList", track_visibility='onchange')
+    price_list = fields.Many2one('product.pricelist', string="PriceList", tracking=True)
     estimate_date = fields.Datetime(readonly=True, default=fields.Datetime.now(), string="Estimation Date", store=True,
-                                    track_visibility='onchange')
+                                    tracking=True)
 
     t_margin = fields.Float(string='Total Margin', store=True, compute='_compute_total', digits=(12, 4),
-                            track_visibility='onchange')
+                            tracking=True)
     t_margin_percentage = fields.Float(string='Margin Percent', store=True, compute='_compute_total', digits=(12, 4),
-                                       track_visibility='onchange')
-    fx = fields.Float('Fx Rate', default=1.0, store=True, digits=(12, 4), track_visibility='onchange')
+                                       tracking=True)
+    fx = fields.Float('Fx Rate', default=1.0, store=True, digits=(12, 4), tracking=True)
 
     cost_estimation_line = fields.One2many('cost.estimation.line', 'idx_cost' , copy=1)
     products_line = fields.One2many('products.line', 'idx_cost',copy=1)
 
     total_material_cost = fields.Float('Total Materials Cost', store=True, compute="_compute_total",
-                                       track_visibility='onchange')
+                                       tracking=True)
     total_labour_cost = fields.Float('Total labour Cost', store=True, compute="_compute_total",
-                                     track_visibility='onchange')
+                                     tracking=True)
     total_overhead_cost = fields.Float('Total Overhead Cost', store=True, compute="_compute_total",
-                                       track_visibility='onchange')
-    total_cost = fields.Float('Cost / Waves', store=True, compute="_compute_total", track_visibility='onchange')
+                                       tracking=True)
+    total_cost = fields.Float('Cost / Waves', store=True, compute="_compute_total", tracking=True)
     total_unit_price = fields.Float('Total Selling Price', store=True, compute="_compute_product_line_total",
-                                    track_visibility='onchange')
+                                    tracking=True)
     quotations_count = fields.Integer()
-    notes = fields.Text('Notes', track_visibility='onchange')
-    total_product_line_tax = fields.Float('Taxes', compute='_compute_product_line_total', track_visibility='onchange')
+    notes = fields.Text('Notes', tracking=True)
+    total_product_line_tax = fields.Float('Taxes', compute='_compute_product_line_total', tracking=True)
     currency_id = fields.Many2one('res.currency', related='price_list.currency_id', readonly=True)
     company_id = fields.Many2one('res.company', required=True, ondelete='cascade',
                                  default=lambda self: self.env.user.company_id)
@@ -83,6 +83,8 @@ class CostEst(models.Model):
     third_party_cost = fields.Float(string="Third Party Cost")
     travel_expenses = fields.Float('Travel Expense')
     hide_create_quotation = fields.Boolean(compute='_check_sale_order_state', default=False, readonly=False)
+    budget_date_from = fields.Date(string="Budget Date From", default=fields.Datetime.now(), tracking=True)
+    budget_date_to = fields.Date(string="To", default=fields.Datetime.now(), tracking=True)
     @api.depends('sale_order.state')
     def _check_sale_order_state(self):
         for rec in self:

@@ -269,7 +269,7 @@ class CustomCRMLead(models.Model):
 class CustomSaleOrder(models.Model):
     _inherit = 'sale.order'
     executive_team_id = fields.Many2one('executive.team')
-    revenue_team_id = fields.Many2one('revenue.team', track_visibility='onchange')
+    revenue_team_id = fields.Many2one('revenue.team', tracking=True)
 
     margin = fields.Float(compute='_compute_margin')
     margin_percentage = fields.Char(compute='_compute_margin')
@@ -279,7 +279,7 @@ class CustomSaleOrder(models.Model):
     travel_expenses = fields.Float()
     margin_after_travel = fields.Float(compute='_compute_margin')
     margin_percentage_after = fields.Char(compute='_compute_margin')
-    third_party_cost = fields.Float(string="Third Party Cost", track_visibility='onchange')
+    third_party_cost = fields.Float(string="Third Party Cost", tracking=True)
     currency_id = fields.Many2one('res.currency', string="Currency", readonly=False)
     budget_total = fields.Float(compute='_compute_budget_total')
     budget_currency = fields.Many2one('res.currency', string="Budget Currency", readonly=False,
@@ -486,7 +486,7 @@ class CustomSaleOrderLine(models.Model):
             i.price_subtotal_new = \
                 i.no_of_units * i.product_uom_qty * i.price_unit
 
-    @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id', 'no_of_waves', 'price_subtotal_new',
+    @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_ids', 'no_of_waves', 'price_subtotal_new',
                  'no_of_units')
     def _compute_amount(self):
         """
@@ -494,7 +494,7 @@ class CustomSaleOrderLine(models.Model):
         """
         for line in self:
             price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-            taxes = line.tax_id.compute_all(
+            taxes = line.tax_ids.compute_all(
                 price * line.no_of_units * line.no_of_waves,
                 line.order_id.currency_id,
                 line.product_uom_qty,

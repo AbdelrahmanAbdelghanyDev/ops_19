@@ -697,7 +697,7 @@
                     <xpath expr="//page/field/list/field[@name='price_subtotal']" position="attributes">
                         <attribute name="string">Total Cost</attribute>
                     </xpath>
-                    <xpath expr="//page/field/list/field[@name='tax_id']" position="attributes">
+                    <xpath expr="//page/field/list/field[@name='tax_ids']" position="attributes">
                         <attribute name="invisible">True</attribute>
                     </xpath>
                     <xpath expr="//field[@name='amount_tax']" position="attributes">

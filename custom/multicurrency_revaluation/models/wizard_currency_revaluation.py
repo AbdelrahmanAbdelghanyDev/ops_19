@@ -2,7 +2,7 @@
 from datetime import timedelta
 
 from odoo import models, fields, api, _
-from odoo.exceptions import Warning as UserError
+from odoo.exceptions import  UserError
 
 # dr_cr = ['Receivable','Bank and Cash','Current asset','Non current asset','Prepayments','Fixed asset','Fixed asset','Depreciation','Cost of revenue','Off_balance sheet']
 dr_cr = ['Non-current Assets','Current Assets','Expenses','Receivable','Bank and Cash','Cost of Revenue','Prepayments','Depreciation','Fixed Assets']

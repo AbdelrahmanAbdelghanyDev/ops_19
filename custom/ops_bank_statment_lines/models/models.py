@@ -4,7 +4,6 @@ import logging
 from odoo import models, fields, api,_
 from odoo.exceptions import UserError, ValidationError
 
-from odoo.addons.account.models.account_bank_statement import AccountBankStatementLine as StatementLine
 
 
 class AccountBankStatement(models.Model):
@@ -64,7 +63,7 @@ class AccountBankStatementLine(models.Model):
             # Hack to force different account instead of the suspense account.
             counterpart_account_ids.append(vals.pop('counterpart_account_id', None))
 
-        st_lines = super(StatementLine,self).create(vals_list)
+        st_lines = super(AccountBankStatementLine,self).create(vals_list)
 
         for i, st_line in enumerate(st_lines):
             counterpart_account_id = counterpart_account_ids[i]

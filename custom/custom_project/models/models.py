@@ -64,7 +64,7 @@ class ProjectTask(models.Model):
         string='End Time', compute='_split_date', store=True)
 
     traveling_time = fields.Datetime('Target(month of completion)', required=True,
-                                     track_visibility='onchange')  # 'Traveling Time'
+                                     tracking=True)  # 'Traveling Time'
 
     date_start = fields.Datetime(string='Starting Date',
                                  default=fields.Datetime.now,
@@ -81,8 +81,8 @@ class ProjectTask(models.Model):
                                 store=True
                                 )
     executive_person = fields.Many2one('executive.team', string="Executive Person")
-    Revenue_bu = fields.Many2one('revenue.team', string="Revenue BU", track_visibility='onchange')
-    Sales_bu = fields.Many2one('crm.team', string="Sales BU", track_visibility='onchange')
+    Revenue_bu = fields.Many2one('revenue.team', string="Revenue BU", tracking=True)
+    Sales_bu = fields.Many2one('crm.team', string="Sales BU", tracking=True)
     date_end1 = fields.Datetime(string='Ending Date', index=True, copy=False)
 
     user_check = fields.Boolean(compute="_check_group")
@@ -157,13 +157,13 @@ class Teams(models.Model):
     _name = 'project.task.teams'
     _inherit = ['mail.thread']
 
-    name = fields.Char("Team Name", required=True, track_visibility='always')
+    name = fields.Char("Team Name", required=True, tracking=True)
 
     member_ids = fields.One2many(
         'team.members',
         'team_id',
         string='Related Member',
-        track_visibility='always'
+        tracking=True
     )
 
 

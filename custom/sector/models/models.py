@@ -22,6 +22,6 @@ class CustomLead(models.Model):
 
 
 class CustomPartner(models.Model):
-    _inherit = ['res.partner']
+    _inherit = 'res.partner'
 
     sector_id = fields.Many2one('sector', 'Sector')

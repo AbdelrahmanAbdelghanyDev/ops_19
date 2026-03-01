@@ -6,7 +6,7 @@ from odoo.exceptions import ValidationError
 
 class CostEstimationQuotation(models.Model):
     _inherit = 'sale.order'
-    budget = fields.Many2one('crossovered.budget',string="Budget", readonly=True)
+    # budget = fields.Many2one('crossovered.budget',string="Budget", readonly=True)
 
     def action_confirm(self):
         res = super(CostEstimationQuotation, self).action_confirm()
@@ -42,16 +42,16 @@ class CostEstimationQuotation(models.Model):
                                                 'date_from': self.cost_estimation_ref.budget_date_from,
                                                 'date_to': self.cost_estimation_ref.budget_date_to,
                                                 'planned_amount': sum(total_budgetary_list)}))
-            if line_list != []:
-                budget = self.env['crossovered.budget'].search([]).create(
-                    {'name': "%s - %s" % (self.name, self.cost_estimation_ref.seq),
-                     'date_from': self.cost_estimation_ref.budget_date_from,
-                     'date_to': self.cost_estimation_ref.budget_date_to,
-                     'user_id': self.user_id.id,
-                     'cost_estimation_id': self.cost_estimation_ref.id,
-                     'crossovered_budget_line': budget_line_list})
-                self.budget = budget.id
-                self.cost_estimation_ref.budget = self.budget
-            else:
-                pass
+            # if line_list != []:
+            #     # budget = self.env['crossovered.budget'].search([]).create(
+            #     #     {'name': "%s - %s" % (self.name, self.cost_estimation_ref.seq),
+            #     #      'date_from': self.cost_estimation_ref.budget_date_from,
+            #     #      'date_to': self.cost_estimation_ref.budget_date_to,
+            #     #      'user_id': self.user_id.id,
+            #     #      'cost_estimation_id': self.cost_estimation_ref.id,
+            #     #      'crossovered_budget_line': budget_line_list})
+            #     # self.budget = budget.id
+            #     # self.cost_estimation_ref.budget = self.budget
+            # else:
+            #     pass
         return res

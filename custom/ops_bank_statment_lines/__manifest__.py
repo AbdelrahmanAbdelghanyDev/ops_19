@@ -21,9 +21,9 @@
         'views/views.xml',
     ],
     # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
+    # 'demo': [
+    #     'demo/demo.xml',
+    # ],
     # 'qweb': ['static/src/xml/disable_save.xml'],
 
 }

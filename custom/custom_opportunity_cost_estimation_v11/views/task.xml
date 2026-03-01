@@ -46,13 +46,13 @@
                     <field invisible="True" name="name"/>
                     <field invisible="True" name="salesman_id"/>
                     <field invisible="False" name="product_uom_qty" string="Qty"/>
-                    <field name="product_uom_category_id" invisible="1"/>
-                    <field invisible="True" groups="uom.group_uom" name="product_uom" string="Unit of Measure"/>
+<!--                    <field name="product_uom_category_id" invisible="1"/>-->
+<!--                    <field invisible="True" groups="uom.group_uom" name="product_uom" string="Unit of Measure"/>-->
                     <field name="price_unit" string="Unit Price"/>
                     <field invisible="True" name="no_of_units" string="No. units"/>
                     <field invisible="False" name="price_subtotal_new" string="Estimate Total" sum="Total"/>
                     <field invisible="True" name="no_of_waves" string="No. waves"/>
-                    <field invisible="True" name="tax_id" widget="many2many_tags"/>
+                    <field invisible="True" name="tax_ids" widget="many2many_tags"/>
                     <field invisible="True" name="price_subtotal" sum="Total" widget="monetary"/>
                     <field name="actual_qty" string="Actual Qty"/>
                     <field name="actual_unit_price" string="Actual Unit Price"/>

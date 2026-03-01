@@ -26,12 +26,11 @@ class CRMProductLine(models.Model):
     description = fields.Text(string="Description", compute='_compute_description')
     product_id = fields.Many2one('product.product', string='Methodology')
     custom_company_id = fields.Integer(compute='_run',
-                                                   default=lambda self: self.env['res.company']._company_default_get(
-                                                       'sale.order').id)
+                                       )
 
     def _run(self):
         for rec in self:
-            rec.custom_company_id = rec.env['res.company']._company_default_get('sale.order').id
+            rec.custom_company_id = rec.env.company.id if rec.env.company else False
 
     fw_country = fields.Many2one('res.country')
     fw_city = fields.Many2one('res.country.state')
@@ -64,7 +63,7 @@ class CRMProductLine(models.Model):
             fw_city = rec.fw_city.name or ''
             sec = rec.sec or ''
 
-            description = ''  # ✅ ALWAYS assign
+            description = ''
 
             if rec.idx and rec.idx.research_type_name == 'QN':
                 description = f'{product},{fw_city}'
@@ -90,7 +89,7 @@ class CustomCRMLead(models.Model):
 class QuotationC(models.Model):
     _inherit = 'sale.order'
 
-    cost_estimation_ref = fields.Many2one('cost.estimation', string='Cost Estimation Ref')
+    # cost_estimation_ref = fields.Many2one('cost.estimation', string='Cost Estimation Ref')
     total_cost = fields.Float('Cost / Waves')
     total_margin = fields.Float('Total Margin', digits=(12, 4), )
     margin_percent = fields.Float('Margin Percent', digits=(12, 4), )
@@ -104,7 +103,7 @@ class QuotationC(models.Model):
     contribution_margin_x = fields.Char(related='margin_percentage_x', store=True)
     travel_expenses = fields.Float('Travel Expense')
     travel_expenses = fields.Float()
-    third_party_cost = fields.Float(string="Third Party Cost", track_visibility='onchange')
+    third_party_cost = fields.Float(string="Third Party Cost", tracking=True)
     budget_total = fields.Float(compute='_compute_budget_total')
     budget_currency = fields.Many2one('res.currency', string="Budget Currency", readonly=False,
                                       related='opportunity_cost_estimation.currency_id')

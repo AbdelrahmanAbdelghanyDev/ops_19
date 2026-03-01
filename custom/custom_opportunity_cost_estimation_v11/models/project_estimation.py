@@ -6,7 +6,26 @@ _logger = logging.getLogger(__name__)
 
 class CustomTaskEstimationLine(models.Model):
     _name = 'custom.task.estimation.line'
-    _inherit = 'custom.sale.order.line'
+
+    # Define required fields
+    name = fields.Text(string='Description', required=True)
+    sequence = fields.Integer(string='Sequence', default=10)
+    order_id = fields.Many2one('sale.order', string='Order Reference', ondelete='cascade', copy=False, index=True)
+    product_id = fields.Many2one('product.product', string='Product', required=True)
+    product_uom_qty = fields.Float(string='Quantity', digits=(16,2), required=True, default=1.0)
+    product_uom = fields.Many2one('uom.uom', string='Unit of Measure')
+    price_unit = fields.Float(string='Unit Price', digits=(16, 2))
+    price_subtotal = fields.Float(string='Subtotal')
+    price_tax = fields.Float(string='Tax')
+    price_total = fields.Float(string='Total')
+    discount = fields.Float(string='Discount (%)', digits=(16, 2), default=0.0)
+    company_id = fields.Many2one('res.company', default=lambda self: self.env.company)
+    currency_id = fields.Many2one('res.currency')
+    tax_ids = fields.Many2many('account.tax', string='Taxes')
+    create_uid = fields.Many2one('res.users', readonly=True)
+    create_date = fields.Datetime(readonly=True)
+    write_uid = fields.Many2one('res.users', readonly=True)
+    write_date = fields.Datetime(readonly=True)
 
     product_no_variant_attribute_value_ids = fields.Many2many('product.template.attribute.value',
                                                               relation="awe_task_line_product_rel",
@@ -20,14 +39,6 @@ class CustomTaskEstimationLine(models.Model):
     invoice_lines = fields.Many2many('account.move.line', 'awe_task_line_invoice_rel', 'order_line_id2',
                                      'invoice_line_id2', string='Invoice Lines', copy=False)
 
-
-    order_id = fields.Many2one(
-        'sale.order',
-        required=False,
-        ondelete='cascade',
-        index=True,
-        copy=False
-    )
     task_id = fields.Many2one('project.task')
     task_name = fields.Char(string="Tasks")
     combined = fields.Boolean(string="Combined Line")
@@ -35,12 +46,10 @@ class CustomTaskEstimationLine(models.Model):
     is_used = fields.Boolean(default=False)
     total_actual_qty = fields.Float()
     total_actual_total = fields.Float()
-    project_id = fields.Many2one(
-        'project.project',
-        # domain=lambda self: self.env['custom.task.estimation.line']
-        # .get_domain_2()
-
-    )
+    project_id = fields.Many2one('project.project')
+    parent_cost = fields.Many2one('opportunity.cost.estimation', string='parent_cost')
+    actual_qty = fields.Float(default=0)
+    actual_unit_price = fields.Float(default=0)
 
     to_WH = fields.Boolean()
     done_to_WH = fields.Boolean()
@@ -51,8 +60,8 @@ class CustomTaskEstimationLine(models.Model):
     def show_details(self):
         return {
             'type': 'ir.actions.act_window',
-            'view_type': 'tree',
-            'view_mode': 'tree',
+            'view_type': 'list',
+            'view_mode': 'list',
             'res_model': 'custom.task.estimation.line',
             'target': 'new',
             'views': [(self.env.ref(
@@ -330,7 +339,7 @@ class CustomTaskEstimationLine(models.Model):
             vals['price_unit'] = \
                 self.env['account.tax']._fix_tax_included_price_company(
                     self._get_display_price(product),
-                    product.taxes_id, self.tax_id,
+                    product.taxes_id, self.tax_ids,
                     self.company_id
                 )
 
@@ -349,19 +358,26 @@ class CustomTaskEstimationLine(models.Model):
 
 class CustomProjectEstimationLine(models.Model):
     _name = 'custom.project.estimation.line'
-    # _inherit = 'custom.sale.order.line'
-    #
-    # invoice_lines = fields.Many2many('account.move.line', 'awe_project_line_rel', 'order_line_id',
-    #                                  'invoice_line_id', string='Invoice Lines', copy=False)
 
-    order_id = fields.Many2one(
-        'sale.order',
-        required=False,
-        ondelete='cascade',
-        index=True,
-        copy=False
-    )
+    name = fields.Text(string='Description', required=True)
+    order_id = fields.Many2one('sale.order', required=False, ondelete='cascade', index=True, copy=False)
+    product_id = fields.Many2one('product.product', string='Product', required=True)
+    product_uom_qty = fields.Float(string='Quantity', digits=(16,2), required=True, default=1.0)
+    product_uom = fields.Many2one('uom.uom', string='Unit of Measure')
+    price_unit = fields.Float(string='Unit Price', digits=(16, 2))
+    price_subtotal = fields.Float(string='Subtotal')
+    price_tax = fields.Float(string='Tax')
+    price_total = fields.Float(string='Total')
+    discount = fields.Float(string='Discount (%)', digits=(16, 2), default=0.0)
+    company_id = fields.Many2one('res.company', default=lambda self: self.env.company)
+    currency_id = fields.Many2one('res.currency')
+    tax_ids = fields.Many2many('account.tax', string='Taxes')
+    create_uid = fields.Many2one('res.users', readonly=True)
+    create_date = fields.Datetime(readonly=True)
+    write_uid = fields.Many2one('res.users', readonly=True)
+    write_date = fields.Datetime(readonly=True)
     project_id = fields.Many2one('project.project')
+    parent_cost = fields.Many2one('opportunity.cost.estimation', string='parent_cost')
 
     def get_domain(self):
         try:
@@ -441,7 +457,7 @@ class CustomProjectEstimationLine(models.Model):
             vals['price_unit'] = \
                 self.env['account.tax']._fix_tax_included_price_company(
                     self._get_display_price(product), product.taxes_id,
-                    self.tax_id,
+                    self.tax_ids,
                     self.company_id
                 )
 

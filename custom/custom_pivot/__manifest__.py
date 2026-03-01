@@ -28,6 +28,11 @@
         'views/views.xml',
         'views/templates.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'custom_pivot/static/src/js/pivot_view.js',
+        ],
+    },
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',

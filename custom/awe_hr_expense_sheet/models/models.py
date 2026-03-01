@@ -138,7 +138,7 @@ class HrExpense(models.Model):
                 'product_id': expense.product_id.id,
                 'product_uom_id': expense.product_uom_id.id,
                 'analytic_account_id': expense.analytic_account_id.id,
-                'analytic_tag_ids': [(6, 0, expense.analytic_tag_ids.ids)],
+                # 'analytic_tag_ids': [(6, 0, expense.analytic_tag_ids.ids)],
                 'expense_id': expense.id,
                 'partner_id': partner_id,
                 'tax_ids': [(6, 0, expense.tax_ids.ids)],
@@ -174,9 +174,7 @@ class HrExpense(models.Model):
                     'expense_id': expense.id,
                     'partner_id': partner_id,
                     'currency_id': expense.currency_id.id,
-                    'analytic_account_id': expense.analytic_account_id.id if tax['analytic'] else False,
-                    'analytic_tag_ids': [(6, 0, expense.analytic_tag_ids.ids)] if tax['analytic'] else False,
-                }
+                    'analytic_account_id': expense.analytic_account_id.id if tax['analytic'] else False,}
                 total_amount -= balance
                 total_amount_currency -= move_line_tax_values['amount_currency']
                 move_line_values.append(move_line_tax_values)

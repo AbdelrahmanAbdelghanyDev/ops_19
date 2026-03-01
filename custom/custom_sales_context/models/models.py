@@ -7,7 +7,7 @@ from odoo.exceptions import UserError
 class CustomSaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    team_id = fields.Many2one(track_visibility='onchange')
+    team_id = fields.Many2one(tracking=True)
     fully_invoiced = fields.Boolean(default=False)
 
     def create_invoice_new(self):

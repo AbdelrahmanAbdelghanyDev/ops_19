@@ -7,9 +7,9 @@
             <field name="arch" type="xml">
                 <xpath expr="//header" position="inside">
                     <button name="post_journals" string="Cost Recog." type="object" class="oe_highlight" groups="aged_report.group_project_task_cost"
-                    attrs="{'invisible': ['|',('is_cost_button_clicked','=', True),('stage_id', '!=', 7)]}" /> <!--7 completed-->
+                    invisible="['|',('is_cost_button_clicked','=', True),('stage_id', '!=', 7)]" /> <!--7 completed-->
                     <button name="close_revenue" string="Revenue Recog." type="object" class="oe_highlight" groups="aged_report.group_project_task_revenue"
-                    attrs="{'invisible': ['|',('is_revenue_button_clicked','=', True),('stage_id', '!=', 7)]}"/> <!--7 completed-->
+                    invisible="['|',('is_revenue_button_clicked','=', True),('stage_id', '!=', 7)]"/> <!--7 completed-->
                     <!--<button name="get_old_converted_revenue" string="old converted revenue" type="object" class="oe_highlight" groups="aged_report.group_project_task_revenue"/>-->
                 </xpath>
 
@@ -33,7 +33,7 @@
             <field name="model">project.task</field>
             <field name="inherit_id" ref="project.view_task_kanban"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='activity_state']" position="after">
+                <xpath expr="//field[@name='activity_ids']" position="after">
                      <field name="converted_revenue" />
                 </xpath>
                 <xpath expr="//progressbar" position="attributes">

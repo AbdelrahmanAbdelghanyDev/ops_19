@@ -1,6 +1,5 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
-from odoo.addons import decimal_precision as dp
 
 
 class OpportunityCostEstimation(models.Model):
@@ -31,6 +30,7 @@ class OpportunityCostEstimation(models.Model):
     )
     template_id = fields.Many2one(
         'cost.estimation.template', string="template_id")
+
     pricelist_id = fields.Many2one('product.pricelist', string='Pricelist')
 
     amount_untaxed = fields.Monetary(
@@ -38,21 +38,21 @@ class OpportunityCostEstimation(models.Model):
         store=True,
         readonly=True,
         compute='_amount_all',
-        track_visibility='always'
+        tracking=True
     )
     amount_tax = fields.Monetary(
         string='Taxes',
         store=True,
         readonly=True,
         compute='_amount_all',
-        track_visibility='always'
+        tracking=True
     )
     amount_total = fields.Monetary(
         string='Total',
         store=True,
         readonly=True,
         compute='_amount_all',
-        track_visibility='always'
+        tracking=True
     )
 
     currency_id = fields.Many2one(
@@ -62,8 +62,7 @@ class OpportunityCostEstimation(models.Model):
     company_id = fields.Many2one(
         'res.company',
         'Company',
-        default=lambda self: self.env['res.company']._company_default_get(
-            'sale.order')
+        default=lambda self: self.env.company,
     )
 
     state = fields.Selection([
@@ -71,7 +70,7 @@ class OpportunityCostEstimation(models.Model):
         ('done', 'Approved'),
         ('cancel', 'Cancelled'),
     ], string='Status', readonly=True, copy=False, index=True,
-        track_visibility='onchange', default='draft')
+        tracking=True, default='draft')
 
     estimation_type = fields.Many2one('product.category')
 
@@ -140,7 +139,7 @@ class OpportunityCostEstimation(models.Model):
                 if order.company_id.tax_calculation_rounding_method == 'round_globally':
                     price = line.price_unit * \
                         (1 - (line.discount or 0.0) / 100.0)
-                    taxes = line.tax_id.compute_all(
+                    taxes = line.tax_ids.compute_all(
                         price,
                         line.order_id.currency_id,
                         line.product_uom_qty,
@@ -274,17 +273,18 @@ class OpportunityCostEstimation(models.Model):
 
 class CostEstimationTemplate(models.Model):
     _name = "cost.estimation.template"
-    _inherit = "sale.order.template"
+    _description = "Cost Estimation Template"
 
     name = fields.Char('Estimation Template', required=True)
     number_of_days = fields.Integer(
         'Estimation Duration',
-        help='Number of days for the \
-        validity date computation of the Estimation'
+        help='Number of days for the validity date computation of the Estimation'
     )
+    company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company)
+    active = fields.Boolean('Active', default=True)
 
     # <quote> naming is not proper here since it is cost estimation,
-    # but is keeped here for the sake of the views template.
+    # but is kept here for the sake of the views template.
     quote_line = fields.One2many(
         'cost.estimate.line',
         'quote_id',
@@ -305,29 +305,52 @@ class CostEstimationTemplate(models.Model):
 
 class CostEstimationLine(models.Model):
     _name = "cost.estimate.line"
-    _inherit = "sale.order.template.line"
+    _description = "Cost Estimation Line"
 
-    price_unit = fields.Float('Unit Price', required=True, digits=dp.get_precision('Product Price'), default =0)
-
-    product_uom_qty = fields.Float('Quantity', required=True, digits=dp.get_precision('Product UoS'), default=0)
-
-    product_id = fields.Many2one('product.product', 'Product', domain=([]),
-                                 required=True)
-
-    quote_id = fields.Many2one('cost.estimation.template')
-
-    my_price_subtotal = fields.Float(string="Total cost", compute='_my_actual_total', store=True)
+    name = fields.Char('Description', required=True)
+    quote_id = fields.Many2one(
+        'cost.estimation.template',
+        string='Cost Estimation Template',
+        ondelete='cascade',
+        required=True
+    )
+    product_id = fields.Many2one(
+        'product.product',
+        'Product',
+        required=True
+    )
+    price_unit = fields.Float(
+        'Unit Price',
+        required=True,
+        digits=(16, 2),
+        default=0
+    )
+    product_uom_qty = fields.Float(
+        'Quantity',
+        required=True,
+        digits=(16, 2),
+        default=1
+    )
+    product_uom_id = fields.Many2one(
+        'uom.uom',
+        'Unit of Measure',
+        required=True
+    )
+    discount = fields.Float('Discount (%)', default=0)
+    website_description = fields.Html('Website Description')
+    my_price_subtotal = fields.Float(
+        string="Total cost",
+        compute='_my_actual_total',
+        store=True
+    )
+    category_id = fields.Many2one('product.category', 'Category')
 
     @api.onchange('product_id')
     def _onchange_product_id(self):
-        self.ensure_one()
         if self.product_id:
-            name = self.product_id.name_get()[0][1]
+            self.name = self.product_id.name
             if self.product_id.description_sale:
-                name += '\n' + self.product_id.description_sale
-            self.name = name
-            # self.price_unit = self.product_id.lst_price
-            self.price_unit = 0
+                self.name += '\n' + self.product_id.description_sale
             self.product_uom_id = self.product_id.uom_id.id
             self.website_description = self.product_id.quote_description or self.product_id.website_description or ''
             domain = {'product_uom_id': [('category_id', '=', self.product_id.uom_id.category_id.id)]}
@@ -336,12 +359,11 @@ class CostEstimationLine(models.Model):
     @api.onchange('product_uom_id')
     def _onchange_product_uom(self):
         if self.product_id and self.product_uom_id:
-            # self.price_unit = self.product_id.uom_id._compute_price(self.product_id.lst_price, self.product_uom_id)
             self.price_unit = 0
 
     @api.depends('product_uom_qty', 'price_unit')
     def _my_actual_total(self):
-        for i in self:
-            i.my_price_subtotal = i.product_uom_qty * i.price_unit
+        for line in self:
+            line.my_price_subtotal = line.product_uom_qty * line.price_unit
 
 

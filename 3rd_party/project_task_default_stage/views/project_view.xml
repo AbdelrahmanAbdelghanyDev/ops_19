@@ -28,15 +28,15 @@
             <xpath expr="//notebook" position="inside">
                 <page string="Project Stages" name="project_stages">
                     <field name="type_ids">
-                        <tree>
+                        <list>
                             <field name="sequence" widget="handle" optional="show" />
                             <field name="name" />
                             <field name="fold" optional="show" />
                             <field name="mail_template_id" optional="show" />
                             <field name="rating_template_id" optional="show" />
                             <field name="auto_validation_state" optional="hide" />
-                            <field name="description" optional="hide" />
-                        </tree>
+<!--                            <field name="description" optional="hide" />-->
+                        </list>
                     </field>
                 </page>
             </xpath>

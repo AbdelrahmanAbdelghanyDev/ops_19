@@ -53,13 +53,13 @@
                 <field invisible="True" name="name"/>
                 <field invisible="True" name="salesman_id"/>
                 <field name="product_uom_qty" string="Qty"/>
-                <field name="product_uom_category_id" invisible="1"/>
-                <field  invisible="True" name="product_uom" string="Unit of Measure"/>
+<!--                <field name="product_uom_category_id" invisible="1"/>-->
+<!--                <field  invisible="True" name="product_uom" string="Unit of Measure"/>-->
                 <field name="price_unit" string="Unit Price"/>
                 <field invisible="True" name="no_of_units" string="No. units"/>
                 <field invisible="False" name="price_subtotal_new" string="Total Estimate Cost" sum="Total"/>
                 <field invisible="True" name="no_of_waves" string="No. waves"/>
-                <field invisible="True" name="tax_id" widget="many2many_tags"/>
+                <field invisible="True" name="tax_ids" widget="many2many_tags"/>
                 <field invisible="True" name="price_subtotal" sum="Total" widget="monetary"/>
                 <field name="actual_qty" invisible="1"/>
                 <field name="actual_unit_price" invisible="1"/>
@@ -121,12 +121,12 @@
                   <field readonly="True" invisible="True" name="name"/>
                   <field readonly="True" invisible="True" name="salesman_id"/>
                   <field readonly="True" name="product_uom_qty" string="Qty"/>
-                  <field readonly="True"  invisible="True" name="product_uom" string="Unit of Measure"/>
+<!--                  <field readonly="True"  invisible="True" name="product_uom" string="Unit of Measure"/>-->
                   <field readonly="True" name="price_unit" string="Unit Price"/>
                   <field readonly="True" invisible="True" name="no_of_units" string="No. units"/>
                   <field readonly="True" invisible="False" name="price_subtotal_new" string="Estimated Cost" sum="Total"/>
                   <field readonly="True" invisible="True" name="no_of_waves" string="No. waves"/>
-                  <field readonly="True" invisible="True" name="tax_id" widget="many2many_tags"/>
+                  <field readonly="True" invisible="True" name="tax_ids" widget="many2many_tags"/>
                   <field readonly="True" invisible="True" name="price_subtotal" sum="Total" widget="monetary"/>
                   <field readonly="True" name="actual_qty" string="Actual Qty"/>
                   <field readonly="True" name="actual_unit_price" string="Actual Unit price"/>
